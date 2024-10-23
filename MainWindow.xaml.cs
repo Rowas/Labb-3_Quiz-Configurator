@@ -14,5 +14,10 @@ namespace Labb_3___Quiz_Configurator
             DataContext = new MainWindowViewModel();
 
         }
+
+        private void ConfigurationView_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

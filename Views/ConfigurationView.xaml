@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views"
+             DataContext="{Binding ConfigurationViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -16,14 +17,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0">
-            <TextBlock>
-                Test
-            </TextBlock>
+            <TextBlock Text="{Binding TestDataConfig}" />
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1">
-            <TextBlock>
-                Test
-            </TextBlock>
+            <TextBlock Text="Test" />
         </StackPanel>
     </Grid>
 </UserControl>

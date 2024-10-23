@@ -16,6 +16,7 @@
         <view:MenuView />
 
         <view:PlayView Grid.Row="1" />
+        <view:ConfigurationView Grid.Row="1" Loaded="ConfigurationView_Loaded" />
 
     </Grid>
 </Window>
