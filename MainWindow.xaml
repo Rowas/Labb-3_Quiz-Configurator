@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb_3___Quiz_Configurator"
+        xmlns:view="clr-namespace:Labb_3___Quiz_Configurator.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -11,27 +12,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <DockPanel>
-            <Menu Grid.Row="0">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_New Question Pack" />
-                    <MenuItem Header="_Select Question Pack" />
-                    <MenuItem Header="_Delete Question Pack" />
-                    <MenuItem Header="_Import Questions" />
-                    <MenuItem Header="_Exit" />
-                </MenuItem>
-                <MenuItem Header="_Edit">
-                    <MenuItem Header="_Add Question" />
-                    <MenuItem Header="_Remove Question" />
-                    <MenuItem Header="_Pack Options" />
-                </MenuItem>
-                <MenuItem Header="_View">
-                    <MenuItem Header="_Play" />
-                    <MenuItem Header="_Edit" />
-                    <MenuItem Header="_Fullscreen" />
-                </MenuItem>
-            </Menu>
+        <DockPanel Grid.Row="0">
+            <view:MenuView DockPanel.Dock="Top"/>
         </DockPanel>
+        <view:ConfigurationView Grid.Row="1"/>
     </Grid>
 </Window>
