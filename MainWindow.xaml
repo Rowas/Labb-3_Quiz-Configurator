@@ -9,12 +9,13 @@
         Title="MainWindow" Height="450" Width="700">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="0">
-            <view:MenuView DockPanel.Dock="Top"/>
-        </DockPanel>
-        <view:ConfigurationView Grid.Row="1"/>
+        
+        <view:MenuView />
+
+        <view:PlayView Grid.Row="1" />
+
     </Grid>
 </Window>

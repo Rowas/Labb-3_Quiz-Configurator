@@ -7,6 +7,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0" Grid.Row="1" Margin="15" Width="200" Height="75" Content="Answer 1" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+        <Button Grid.Column="0" Grid.Row="2" Margin="15" Width="200" Height="75" Content="Answer 2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+        <Button Grid.Column="1" Grid.Row="1" Margin="15" Width="200" Height="75" Content="Answer 3" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+        <Button Grid.Column="1" Grid.Row="2" Margin="15" Width="200" Height="75" Content="Answer 4" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+
     </Grid>
 </UserControl>

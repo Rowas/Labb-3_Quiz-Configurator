@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Labb_3___Quiz_Configurator.Model
+﻿namespace Labb_3___Quiz_Configurator.Model
 {
     enum Difficulty { Easy, Medium, Hard }
     internal class QuestionPack

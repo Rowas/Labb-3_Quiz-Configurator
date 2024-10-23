@@ -3,30 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views"
+             xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="_File">
-                <MenuItem Header="_New Question Pack" />
-                <MenuItem Header="_Select Question Pack" />
-                <MenuItem Header="_Delete Question Pack" />
-                <MenuItem Header="_Import Questions" IsEnabled="False"/>
-                <Separator/>
-                <MenuItem Header="E_xit" />
-            </MenuItem>
-            <MenuItem Header="_Edit">
-                <MenuItem Header="_Add Question" />
-                <MenuItem Header="_Remove Question" />
-                <MenuItem Header="_Pack Options" />
-            </MenuItem>
-            <MenuItem Header="_View">
-                <MenuItem Header="_Play" />
-                <MenuItem Header="_Edit" />
-                <Separator/>
-                <MenuItem Header="_Fullscreen" />
-            </MenuItem>
-        </Menu>
-    </Grid>
+    <Menu>
+        <MenuItem Header="_File">
+            <MenuItem Header="_New Question Pack" Icon="{fa:Icon plus}"/>
+            <MenuItem Header="_Select Question Pack" Icon="{fa:Icon folderopen}"/>
+            <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon minus}"/>
+            <MenuItem Header="_Import Questions" IsEnabled="False" Icon="{fa:Icon cloudarrowdown}"/>
+            <Separator/>
+            <MenuItem Header="E_xit" Icon="{fa:Icon dooropen}" />
+        </MenuItem>
+
+        <MenuItem Header="_Edit">
+            <MenuItem Header="_Add Question" Icon="{fa:Icon squareplus}" />
+            <MenuItem Header="_Remove Question" Icon="{fa:Icon squareminus}" />
+            <MenuItem Header="_Pack Options" Icon="{fa:Icon squarepen}" />
+        </MenuItem>
+
+        <MenuItem Header="_View">
+            <MenuItem Header="_Play" Icon="{fa:Icon circleplay}" />
+            <MenuItem Header="_Edit" Icon="{fa:Icon filepen}" />
+            <Separator/>
+            <MenuItem Header="_Fullscreen" />
+        </MenuItem>
+    </Menu>
 </UserControl>

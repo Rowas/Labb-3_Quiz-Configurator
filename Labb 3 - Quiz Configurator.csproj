@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ViewModel\" />
+    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
   </ItemGroup>
 
 </Project>
