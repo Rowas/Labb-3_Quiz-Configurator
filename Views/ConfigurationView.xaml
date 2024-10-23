@@ -4,23 +4,40 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views"
-             DataContext="{Binding ConfigurationViewModel}"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             DataContext="{Binding ConfigViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="700">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Column="0" Grid.Row="0">
-            <TextBlock Text="{Binding TestDataConfig}" />
-        </StackPanel>
-        <StackPanel Grid.Column="0" Grid.Row="1">
-            <TextBlock Text="Test" />
-        </StackPanel>
+        <DockPanel Grid.RowSpan="2">
+            <DockPanel Dock="Top">
+                <Label DockPanel.Dock="Left" VerticalAlignment="Center" 
+                       Margin="8 0" FontWeight="Bold" Content="{Binding TestDataConfig}"/>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
+                            ToolTip="Configure Pack" Width="19" Height="19">
+                        <fa:IconBlock Icon="Gears"/>
+                    </Button>
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
+                            ToolTip="Add a Question" Width="19" Height="19">
+                        <fa:IconBlock Icon="Add"/>
+                    </Button>
+                    <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
+                            ToolTip="Remove a Question" Width="19" Height="19">
+                        <fa:IconBlock Icon="Remove"/>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+            <ListBox DockPanel.Dock="Bottom" Margin="5">
+            </ListBox>
+        </DockPanel>
     </Grid>
 </UserControl>
