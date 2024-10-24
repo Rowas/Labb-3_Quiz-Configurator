@@ -6,7 +6,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
     {
         public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
         public PlayViewModel PlayViewModel { get; }
-        public ConfigurationViewModel ConfigViewModel { get; }
+        public ConfigurationViewModel ConfigurationViewModel { get; }
 
         private QuestionPackViewModel? _activePack;
         public QuestionPackViewModel? ActivePack
@@ -16,13 +16,14 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             {
                 _activePack = value;
                 RaisePropertyChanged();
+                ConfigurationViewModel.RaisePropertyChanged("ActivePack");
             }
         }
 
         public MainWindowViewModel()
         {
             PlayViewModel = new PlayViewModel(this);
-            ConfigViewModel = new ConfigurationViewModel(this);
+            ConfigurationViewModel = new ConfigurationViewModel(this);
 
             ActivePack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
         }

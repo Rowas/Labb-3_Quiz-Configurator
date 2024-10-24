@@ -10,5 +10,7 @@
         {
             this.mainWindowViewModel = mainWindowViewModel;
         }
+
+        public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
     }
 }

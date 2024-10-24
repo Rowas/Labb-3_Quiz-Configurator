@@ -22,13 +22,16 @@
         <DockPanel Dock="Top" Grid.ColumnSpan="2" Margin="0">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="Question 1 out of 10" />
         </DockPanel>
-        <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="18" FontWeight="DemiBold" Text="Question to answer." TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
+        <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="20" FontWeight="SemiBold" Text="{Binding TestPlayTimer}" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 125"/>
+        <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="18" FontWeight="Bold" Text="Question to answer." 
+                   TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
         <Button Grid.Column="0" Grid.Row="1" Margin="15" Width="200" Height="75" 
                 Content="{Binding TestDataPlay}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
         <Button Grid.Column="0" Grid.Row="2" Margin="15" Width="200" Height="75" 
                 Content="Answer 2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
         <Button Grid.Column="1" Grid.Row="1" Margin="15" Width="200" Height="75" 
-                Content="Answer 3" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                Content="Answer 3" VerticalAlignment="Bottom" HorizontalAlignment="Left" Command="{Binding UpdateButtonCommand}"/>
         <Button Grid.Column="1" Grid.Row="2" Margin="15" Width="200" Height="75" 
                 Content="Answer 4" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
