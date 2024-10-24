@@ -9,18 +9,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="700">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.RowSpan="2">
+        <DockPanel>
             <DockPanel Dock="Top">
                 <Label DockPanel.Dock="Left" VerticalAlignment="Center" 
-                       Margin="8 0" FontWeight="Bold" Content="{Binding TestDataConfig}"/>
+                       Margin="8 0" FontWeight="Bold" Content="Test Data"/>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
                             ToolTip="Configure Pack" Width="19" Height="19">
@@ -38,6 +34,22 @@
             </DockPanel>
             <ListBox DockPanel.Dock="Bottom" Margin="5">
             </ListBox>
+        </DockPanel>
+        <DockPanel Grid.Column="1" Margin="10 30 10 10">
+            <DockPanel Dock="Top" Margin="0 0 10 0">
+                <Label DockPanel.Dock="Top" FontWeight="Bold" Padding="2" Content="Question" />
+                <TextBox DockPanel.Dock="Top" Margin="0 5 0 0" TextWrapping="Wrap" Text="New Question" Height="75" />
+        </DockPanel>
+        <StackPanel Grid.Column="1" Margin="0 40 10 0">
+                <Label DockPanel.Dock="Top" Padding="0" Content="Correct Answer" />
+                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
+                <Label DockPanel.Dock="Top" Padding="0" Content="First Incorrect Answer" />
+                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
+                <Label DockPanel.Dock="Top" Padding="0" Content="Second Incorrect Answer" />
+                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
+                <Label DockPanel.Dock="Top" Padding="0" Content="Third Incorrect Answer" />
+                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
+            </StackPanel>
         </DockPanel>
     </Grid>
 </UserControl>
