@@ -9,6 +9,26 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public ConfigurationViewModel ConfigurationViewModel { get; }
 
         private QuestionPackViewModel? _activePack;
+        private bool _isEditing = true;
+        public bool IsEditing
+        {
+            get => _isEditing;
+            set
+            {
+                _isEditing = !value;
+                RaisePropertyChanged();
+            }
+        }
+        private bool _isPlaying = false;
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            set
+            {
+                _isPlaying = !value;
+                RaisePropertyChanged();
+            }
+        }
         public QuestionPackViewModel? ActivePack
         {
             get => _activePack;
@@ -27,6 +47,14 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             ActivePack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
         }
+
+        public void ModeSwitch()
+        {
+            if (IsPlaying)
+            {
+            }
+        }
+
 
     }
 }

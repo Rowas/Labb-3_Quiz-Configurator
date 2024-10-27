@@ -4,7 +4,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 {
     internal class ConfigurationViewModel : ViewModelBase
     {
-        private bool _isEditing = true;
 
         private readonly MainWindowViewModel? mainWindowViewModel;
 
@@ -16,11 +15,11 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         {
             this.mainWindowViewModel = mainWindowViewModel;
 
-            IsEditingCommand = new DelegateCommand(Editing);
         }
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
 
+        private bool _isEditing = true;
         public bool IsEditing
         {
             get => _isEditing;
@@ -29,11 +28,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 _isEditing = !value;
                 RaisePropertyChanged();
             }
-        }
-
-        private void Editing(object obj)
-        {
-            IsEditing = true;
         }
     }
 }

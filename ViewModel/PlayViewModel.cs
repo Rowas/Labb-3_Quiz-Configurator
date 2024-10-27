@@ -9,8 +9,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
         private readonly MainWindowViewModel? mainWindowViewModel;
 
-        private bool _isPlaying = false;
-
         private DispatcherTimer timer;
         private string _testDataPlay = "This is test data.";
         private int _testPlayTimer = 60;
@@ -36,8 +34,8 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         }
 
         public DelegateCommand UpdateButtonCommand { get; }
-        public DelegateCommand IsPlayingCommand { get; }
         public DelegateCommand StartTimerCommand { get; }
+        private bool _isPlaying = false;
         public bool IsPlaying
         {
             get => _isPlaying;
@@ -59,17 +57,11 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             StartTimerCommand = new DelegateCommand(StartTimer);
             UpdateButtonCommand = new DelegateCommand(UpdateButton);
-            IsPlayingCommand = new DelegateCommand(Playing);
         }
 
         private void StartTimer(object obj)
         {
             timer.Start();
-        }
-
-        private void Playing(object obj)
-        {
-            IsPlaying = true;
         }
 
         private void UpdateButton(object obj)

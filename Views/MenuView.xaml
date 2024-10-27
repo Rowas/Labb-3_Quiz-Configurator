@@ -26,8 +26,8 @@
         </MenuItem>
 
         <MenuItem Header="_View">
-            <MenuItem Header="_Play" Icon="{fa:Icon circleplay}" DataContext="PlayViewModel" Command="{Binding IsPlayingCommand}"/>
-            <MenuItem Header="_Edit" Icon="{fa:Icon filepen}" DataContext="ConfigurationViewModel" Command="{Binding IsEditingCommand}"/>
+            <MenuItem Header="_Play" Icon="{fa:Icon circleplay}" DataContext="PlayViewModel" Command="{Binding IsPlayingCommand}" Visibility="{Binding IsPlaying, Converter={StaticResource boolToVisibilityConverter}}" />
+            <MenuItem Header="_Edit" Icon="{fa:Icon filepen}" DataContext="ConfigurationViewModel" Command="{Binding IsEditingCommand}" Visibility="{Binding IsEditing, Converter={StaticResource boolToVisibilityConverter}}" />
             <Separator/>
             <MenuItem Header="_Fullscreen" />
         </MenuItem>
