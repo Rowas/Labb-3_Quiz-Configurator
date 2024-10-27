@@ -7,7 +7,13 @@
         xmlns:view="clr-namespace:Labb_3___Quiz_Configurator.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="700">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -15,8 +21,8 @@
         
         <view:MenuView />
 
-        <view:PlayView Grid.Row="1"  />
-        <view:ConfigurationView Grid.Row="1" Visibility="Collapsed" />
+        <view:PlayView Grid.Row="1" Visibility="{Binding IsPlaying, Converter={StaticResource boolToVisibilityConverter}}"  />
+        <view:ConfigurationView Grid.Row="1" Visibility="{Binding IsEditing, Converter={StaticResource boolToVisibilityConverter}}" />
 
     </Grid>
 </Window>

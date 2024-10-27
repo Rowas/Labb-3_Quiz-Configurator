@@ -7,6 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Menu>
+        <Menu.Resources>
+            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        </Menu.Resources>
         <MenuItem Header="_File">
             <MenuItem Header="_New Question Pack" Icon="{fa:Icon plus}"/>
             <MenuItem Header="_Select Question Pack" Icon="{fa:Icon folderopen}"/>
@@ -23,8 +26,8 @@
         </MenuItem>
 
         <MenuItem Header="_View">
-            <MenuItem Header="_Play" Icon="{fa:Icon circleplay}" />
-            <MenuItem Header="_Edit" Icon="{fa:Icon filepen}" />
+            <MenuItem Header="_Play" Icon="{fa:Icon circleplay}" DataContext="PlayViewModel" Command="{Binding IsPlayingCommand}"/>
+            <MenuItem Header="_Edit" Icon="{fa:Icon filepen}" DataContext="ConfigurationViewModel" Command="{Binding IsEditingCommand}"/>
             <Separator/>
             <MenuItem Header="_Fullscreen" />
         </MenuItem>

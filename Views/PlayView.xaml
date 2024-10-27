@@ -8,6 +8,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        </Grid.Resources>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -33,7 +37,7 @@
         <Button Grid.Column="1" Grid.Row="1" Margin="15" Width="200" Height="75" 
                 Content="Answer 3" VerticalAlignment="Bottom" HorizontalAlignment="Left" Command="{Binding UpdateButtonCommand}"/>
         <Button Grid.Column="1" Grid.Row="2" Margin="15" Width="200" Height="75" 
-                Content="Answer 4" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                Content="Answer 4" VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding StartTimerCommand}"/>
 
     </Grid>
 </UserControl>
