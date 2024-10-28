@@ -7,22 +7,26 @@
         xmlns:view="clr-namespace:Labb_3___Quiz_Configurator.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="700">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CloseCommandHandler"/>
+    </Window.CommandBindings>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
     </Window.Resources>
     <Grid>
-        <Grid.Resources>
-            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
-        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <view:MenuView />
-
-        <view:PlayView Grid.Row="1" Visibility="{Binding IsPlaying, Converter={StaticResource boolToVisibilityConverter}}"  />
-        <view:ConfigurationView Grid.Row="1" Visibility="{Binding IsEditing, Converter={StaticResource boolToVisibilityConverter}}" />
-
+        <Grid Row="0">
+            <view:MenuView />
+        </Grid>
+        <Grid Row="1" Visibility="{Binding PlayMode, Converter={StaticResource boolToVisibilityConverter}}">
+            <view:PlayView />
+        </Grid>
+        <Grid Row="1" Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}">
+            <view:ConfigurationView/>
+        </Grid>
     </Grid>
 </Window>

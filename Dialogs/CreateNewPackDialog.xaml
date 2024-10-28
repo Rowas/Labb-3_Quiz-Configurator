@@ -5,8 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Dialogs"
         mc:Ignorable="d"
-        Title="CreateNewPackDialog" Height="450" Width="800">
+        Title="New Question Pack" Height="260" Width="195" WindowStyle="ToolWindow">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CloseCommandHandler"/>
+    </Window.CommandBindings>
     <Grid>
-        
+        <StackPanel>
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Top" Content="Pack Name:" FontWeight="Bold" FontSize="15" />
+                <TextBox DockPanel.Dock="Top" Text="Name of Pack" Margin="5 0 5 0" />
+            </DockPanel>
+            <DockPanel Margin="5">
+                <Label DockPanel.Dock="Top" Content="Difficulty:" FontWeight="Bold" FontSize="15" />
+                <ComboBox DockPanel.Dock="Top" Margin="5 0 5 0" SelectedIndex="1">
+                    <ComboBoxItem Content="Easy" />
+                    <ComboBoxItem Content="Medium" />
+                    <ComboBoxItem Content="Hard" />
+                </ComboBox>
+            </DockPanel>
+            <DockPanel Margin="5">
+                <WrapPanel DockPanel.Dock="Top">
+                    <Label VerticalAlignment="Center" Content="Time Limit:" FontWeight="Bold" FontSize="15" Margin="5 0 5 0" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ElementName=timeSlider, Path=Value}" FontSize="15" Margin="5 0 5 0" />
+                </WrapPanel>
+                <Slider x:Name="timeSlider" DockPanel.Dock="Top" Margin="5 0 5 0" Minimum="10" Maximum="60" Value="30" TickFrequency="5" IsSnapToTickEnabled="True" />
+            </DockPanel>
+            <WrapPanel Margin="5 0 5 10">
+                <Button Content="Create" Width="75" Margin="5" />
+                <Button Content="Cancel" Width="75" Margin="5" Command="ApplicationCommands.Close" />
+            </WrapPanel>
+        </StackPanel>
     </Grid>
 </Window>

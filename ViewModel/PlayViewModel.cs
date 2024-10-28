@@ -35,16 +35,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
         public DelegateCommand UpdateButtonCommand { get; }
         public DelegateCommand StartTimerCommand { get; }
-        private bool _isPlaying = false;
-        public bool IsPlaying
-        {
-            get => _isPlaying;
-            set
-            {
-                _isPlaying = !value;
-                RaisePropertyChanged();
-            }
-        }
 
         public PlayViewModel(MainWindowViewModel? mainWindowViewModel)
         {

@@ -23,7 +23,8 @@
                        Margin="8 0" FontWeight="Bold" Content="Test Data"/>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
-                            ToolTip="Configure Pack" Width="19" Height="19">
+                            ToolTip="Configure Pack" Width="19" Height="19"
+                            Command="{Binding PackOptionsCommand}">
                         <fa:IconBlock Icon="Gears"/>
                     </Button>
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 

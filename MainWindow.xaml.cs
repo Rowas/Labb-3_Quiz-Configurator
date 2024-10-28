@@ -1,5 +1,6 @@
 ﻿using Labb_3___Quiz_Configurator.ViewModel;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Labb_3___Quiz_Configurator
 {
@@ -12,12 +13,10 @@ namespace Labb_3___Quiz_Configurator
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-
         }
-
-        private void ConfigurationView_Loaded(object sender, RoutedEventArgs e)
+        private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
-
+            this.Close();
         }
     }
 }
