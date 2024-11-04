@@ -4,40 +4,62 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views"
-             DataContext="{Binding PlayViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             DataContext="{Binding PlayViewModel}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid>
-        <Grid.Resources>
-            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
-        </Grid.Resources>
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <StackPanel VerticalAlignment="Center" Visibility="{Binding ConfirmPlay, Converter={StaticResource boolToVisibilityConverter}}">
+            <WrapPanel HorizontalAlignment="Center" >
+                <Label FontWeight="DemiBold" Content="Pack chosen:" />
+                <Label Content="{Binding PlayPack.Name}" />
+            </WrapPanel>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Press to Start Playing" Width="200" 
+                    Command="{Binding BeginGameCommand}" />
+        </StackPanel>
 
-        <DockPanel Dock="Top" Grid.ColumnSpan="2" Margin="0">
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" Text="Question 1 out of 10" />
-        </DockPanel>
-        <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="20" FontWeight="SemiBold" Text="{Binding TestPlayTimer}" 
+        <Grid Visibility="{Binding GameBegun, Converter={StaticResource boolToVisibilityConverter}}">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <DockPanel Dock="Top" Grid.ColumnSpan="2" Margin="0">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Bottom" >
+                            <Run Text="Question " />
+                            <Run Text="{Binding CurrentQuestionCount}" />
+                            <Run Text=" of " />
+                            <Run Text="{Binding TotalQuestionsCount}" />
+                </TextBlock>
+            </DockPanel>
+            <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="20" FontWeight="SemiBold" Text="{Binding TimeLimit}" 
                    HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 125"/>
-        <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="18" FontWeight="Bold" Text="Question to answer." 
+            <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="18" FontWeight="Bold" Text="{Binding CurrentAskedQuestion}" 
                    TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
-        <Button Grid.Column="0" Grid.Row="1" Margin="15" Width="200" Height="75" 
-                Content="{Binding TestDataPlay}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
-        <Button Grid.Column="0" Grid.Row="2" Margin="15" Width="200" Height="75" 
-                Content="Answer 2" VerticalAlignment="Top" HorizontalAlignment="Right"/>
-        <Button Grid.Column="1" Grid.Row="1" Margin="15" Width="200" Height="75" 
-                Content="Answer 3" VerticalAlignment="Bottom" HorizontalAlignment="Left" Command="{Binding UpdateButtonCommand}"/>
-        <Button Grid.Column="1" Grid.Row="2" Margin="15" Width="200" Height="75" 
-                Content="Answer 4" VerticalAlignment="Top" HorizontalAlignment="Left" Command="{Binding StartTimerCommand}"/>
-
+            <Button Grid.Column="0" Grid.Row="1" Margin="15" Width="200" Height="75" 
+                Content="{Binding AnswerList[0]}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Command="{Binding Response1Command}" />
+            <Button Grid.Column="0" Grid.Row="2" Margin="15" Width="200" Height="75" 
+                Content="{Binding AnswerList[1]}" VerticalAlignment="Top" HorizontalAlignment="Right"
+                    Command="{Binding Response2Command}" />
+            <Button Grid.Column="1" Grid.Row="1" Margin="15" Width="200" Height="75" 
+                Content="{Binding AnswerList[2]}" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                    Command="{Binding Response3Command}" />
+            <Button Grid.Column="1" Grid.Row="2" Margin="15" Width="200" Height="75" 
+                Content="{Binding AnswerList[3]}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    Command="{Binding Response4Command}" />
+            <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" Content="{Binding CorrectOrNot}" 
+                   Margin="0,75,0,0" FontWeight="Bold" FontSize="20" Foreground="Indigo" 
+                   Visibility="{Binding QuestionAnswered, Converter={StaticResource boolToVisibilityConverter}}" />
+        </Grid>
     </Grid>
 </UserControl>

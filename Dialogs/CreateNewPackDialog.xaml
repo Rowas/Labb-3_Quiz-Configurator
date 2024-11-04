@@ -14,11 +14,11 @@
         <StackPanel>
             <DockPanel Margin="5">
                 <Label DockPanel.Dock="Top" Content="Pack Name:" FontWeight="Bold" FontSize="15" />
-                <TextBox DockPanel.Dock="Top" Text="Name of Pack" Margin="5 0 5 0" />
+                <TextBox x:Name="packName" DockPanel.Dock="Top" Text="Name of Pack" Margin="5 0 5 0" />
             </DockPanel>
             <DockPanel Margin="5">
                 <Label DockPanel.Dock="Top" Content="Difficulty:" FontWeight="Bold" FontSize="15" />
-                <ComboBox DockPanel.Dock="Top" Margin="5 0 5 0" SelectedIndex="1">
+                <ComboBox x:Name="difficulty" DockPanel.Dock="Top" Margin="5 0 5 0" SelectedIndex="1">
                     <ComboBoxItem Content="Easy" />
                     <ComboBoxItem Content="Medium" />
                     <ComboBoxItem Content="Hard" />
@@ -31,9 +31,8 @@
                 </WrapPanel>
                 <Slider x:Name="timeSlider" DockPanel.Dock="Top" Margin="5 0 5 0" Minimum="10" Maximum="60" Value="30" TickFrequency="5" IsSnapToTickEnabled="True" />
             </DockPanel>
-            <WrapPanel Margin="5 0 5 10">
-                <Button Content="Create" Width="75" Margin="5" />
-                <Button Content="Cancel" Width="75" Margin="5" Command="ApplicationCommands.Close" />
+            <WrapPanel HorizontalAlignment="Center" Margin="5 0 5 10">
+                <Button Content="Create" Width="75" Margin="5" Command="ApplicationCommands.Close" />
             </WrapPanel>
         </StackPanel>
     </Grid>

@@ -1,4 +1,6 @@
-﻿namespace Labb_3___Quiz_Configurator.Model
+﻿using System.Text.Json.Serialization;
+
+namespace Labb_3___Quiz_Configurator.Model
 {
     internal class Question
     {
@@ -10,6 +12,8 @@
             CorrectAnswer = correctAnswer;
             IncorrectAnswers = new string[3] { incorrectAnswer1, incorrectAnswer2, incorrectAnswer3 };
         }
+        [JsonConstructor]
+        public Question() { }
         public string Query { get; set; }
 
         public string CorrectAnswer { get; set; }

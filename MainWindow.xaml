@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Labb_3___Quiz_Configurator"
         xmlns:view="clr-namespace:Labb_3___Quiz_Configurator.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="700">
+        Title="MainWindow" Height="450" Width="700" ResizeMode="NoResize">
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CloseCommandHandler"/>

@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d">
     <Menu>
         <Menu.Resources>
             <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
@@ -15,18 +14,34 @@
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
                       Command="{Binding AddPackCommand}"/>
             <MenuItem Header="_Select Question Pack" Icon="{fa:Icon folderopen}" 
-                      Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}"/>
+                      Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}"
+                      ItemsSource="{Binding Packs}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <Run Text="{Binding Name}" />
+                            <Run Text="  (" />
+                            <Run Text="{Binding Difficulty}" />
+                            <Run Text=")" />
+                        </TextBlock>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </MenuItem>
+            <MenuItem Header="_Save Question Pack" Icon="{fa:Icon save}" 
+                      Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
+                      Command="{Binding SaveQuestionPackCommand}"/>
             <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon minus}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" />
-            <MenuItem Header="_Import Questions" IsEnabled="False" Icon="{fa:Icon cloudarrowdown}" 
-                      Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" />
+            <MenuItem Header="_Import Questions" IsEnabled="True" Icon="{fa:Icon cloudarrowdown}" 
+                      Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
+                      Command="{Binding LoadQuestionPackCommand}"/>
             <Separator/>
             <MenuItem Header="E_xit" Icon="{fa:Icon dooropen}" Command="ApplicationCommands.Close"/>
         </MenuItem>
 
         <MenuItem Header="_Edit" 
                   Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" >
-            <MenuItem Header="_Add Question" Icon="{fa:Icon squareplus}" />
+            <MenuItem Header="_Add Question" Icon="{fa:Icon squareplus}" Command="{Binding NewQuestionCommand}"/>
             <MenuItem Header="_Remove Question" Icon="{fa:Icon squareminus}" />
             <MenuItem Header="_Pack Options" Icon="{fa:Icon squarepen}" Command="{Binding ConfigurationViewModel.PackOptionsCommand}" />
         </MenuItem>

@@ -16,5 +16,10 @@ namespace Labb_3___Quiz_Configurator.Dialogs
         {
             this.Close();
         }
+        private (bool, string, string?, double) SaveChanges(object sender, ExecutedRoutedEventArgs e)
+        {
+            return (true, packName.Text, difficulty.SelectedValue.ToString(), timeSlider.Value);
+        }
+
     }
 }

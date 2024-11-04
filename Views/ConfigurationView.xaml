@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-             DataContext="{Binding ConfigurationViewModel}"
+             xmlns:converters="clr-namespace:Labb_3___Quiz_Configurator.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="700">
     <Grid>
         <Grid.Resources>
             <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+            <converters:nullToVisibilityConverter x:Key="nullToVisibilityConverter" />
         </Grid.Resources>
         
         <Grid.ColumnDefinitions>
@@ -20,41 +21,51 @@
         <DockPanel>
             <DockPanel Dock="Top">
                 <Label DockPanel.Dock="Left" VerticalAlignment="Center" 
-                       Margin="8 0" FontWeight="Bold" Content="Test Data"/>
+                       Margin="8 0" FontWeight="Bold" Content="{Binding ActivePack.Name}"/>
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
                             ToolTip="Configure Pack" Width="19" Height="19"
-                            Command="{Binding PackOptionsCommand}">
+                            Command="{Binding ConfigurationViewModel.PackOptionsCommand}">
                         <fa:IconBlock Icon="Gears"/>
                     </Button>
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
-                            ToolTip="Add a Question" Width="19" Height="19">
+                            ToolTip="Add a Question" Width="19" Height="19" Command="{Binding NewQuestionCommand}">
                         <fa:IconBlock Icon="Add"/>
                     </Button>
                     <Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 5 5 0" 
-                            ToolTip="Remove a Question" Width="19" Height="19">
+                            ToolTip="Remove a Question" Width="19" Height="19" Command="{Binding RemoveQuestionCommand}" >
                         <fa:IconBlock Icon="Remove"/>
                     </Button>
                 </StackPanel>
             </DockPanel>
-            <ListBox DockPanel.Dock="Bottom" Margin="5">
+            <ListBox DockPanel.Dock="Bottom" Margin="5" ItemsSource="{Binding ActivePack.Questions}" SelectedItem="{Binding ActiveQuestion}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock Text="Question:" FontWeight="Bold"/>
+                            <TextBlock MaxWidth="320" TextWrapping="Wrap" Text="{Binding Query}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
             </ListBox>
         </DockPanel>
-        <DockPanel Grid.Column="1" Margin="10 30 10 10">
-            <DockPanel Dock="Top" Margin="0 0 10 0">
-                <Label DockPanel.Dock="Top" FontWeight="Bold" Padding="2" Content="Question" />
-                <TextBox DockPanel.Dock="Top" Margin="0 5 0 0" TextWrapping="Wrap" Text="New Question" Height="75" />
-        </DockPanel>
-        <StackPanel Grid.Column="1" Margin="0 40 10 0">
-                <Label DockPanel.Dock="Top" Padding="0" Content="Correct Answer" />
-                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
-                <Label DockPanel.Dock="Top" Padding="0" Content="First Incorrect Answer" />
-                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
-                <Label DockPanel.Dock="Top" Padding="0" Content="Second Incorrect Answer" />
-                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
-                <Label DockPanel.Dock="Top" Padding="0" Content="Third Incorrect Answer" />
-                <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" />
-            </StackPanel>
+        <DockPanel Grid.Column="1" Visibility="{Binding ActiveQuestion, Converter={StaticResource nullToVisibilityConverter}}">
+            <DockPanel Margin="10 30 10 10">
+                <DockPanel Dock="Top" Margin="0 0 10 0">
+                    <Label DockPanel.Dock="Top" FontWeight="Bold" Padding="2" Content="Question" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 5 0 0" TextWrapping="Wrap" Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="75" />
+                </DockPanel>
+                <StackPanel Margin="0 40 10 0">
+                    <Label DockPanel.Dock="Top" Padding="0" Content="Correct Answer" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label DockPanel.Dock="Top" Padding="0" Content="Incorrect Answer 1" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.IncorrectAnswers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label DockPanel.Dock="Top" Padding="0" Content="Incorrect Answer 2" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.IncorrectAnswers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Label DockPanel.Dock="Top" Padding="0" Content="Incorrect Answer 3" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.IncorrectAnswers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </DockPanel>
         </DockPanel>
     </Grid>
 </UserControl>

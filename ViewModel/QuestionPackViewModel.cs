@@ -41,7 +41,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public ObservableCollection<Question> Questions { get; }
+        public ObservableCollection<Question> Questions { get; private set; }
 
 
     }
