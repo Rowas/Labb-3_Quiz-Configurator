@@ -70,7 +70,7 @@
                 <Run Text="{Binding TotalQuestionsCount}" />
                 <Run Text="questions correct!" />
             </TextBlock>
-            <Button Content="Restart" HorizontalAlignment="Center" VerticalAlignment="Center" 
+            <Button Content="Restart?" HorizontalAlignment="Center" VerticalAlignment="Center" 
                     Margin="0,150,0,0" Width="100" Height="35" Command="{Binding RestartGameCommand}" />
         </Grid>
     </Grid>

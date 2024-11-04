@@ -1,10 +1,12 @@
 ﻿using Labb_3___Quiz_Configurator.Command;
 using Labb_3___Quiz_Configurator.Dialogs;
 using Labb_3___Quiz_Configurator.Model;
+using Labb_3___Quiz_Configurator.Views;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
+using System.Windows;
 namespace Labb_3___Quiz_Configurator.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
@@ -13,6 +15,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         private Question? activeQuestion;
         private QuestionPackViewModel? _activePack;
         private QuestionPackViewModel? _loadedPack;
+        public MenuView MenuView { get; }
         public ObservableCollection<QuestionPackViewModel> _packs;
         public ObservableCollection<QuestionPackViewModel> Packs { get => _packs; set { _packs = value; RaisePropertyChanged(); } }
         public ConfigurationViewModel ConfigurationViewModel { get; }
@@ -22,7 +25,9 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public DelegateCommand RemoveQuestionCommand { get; }
         public DelegateCommand SaveQuestionPackCommand { get; }
         public DelegateCommand LoadQuestionPackCommand { get; }
+        public DelegateCommand FullscreenCommand { get; }
         public PlayViewModel PlayViewModel { get; }
+        public WindowState _mainWindowState = WindowState.Normal;
 
         public JsonSerializerOptions options = new JsonSerializerOptions()
         {
@@ -36,6 +41,16 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         private bool _playMode = false;
         private bool _configMode = true;
         private int _numberOfQInPack;
+
+        public WindowState MainWindowState
+        {
+            get => _mainWindowState;
+            set
+            {
+                _mainWindowState = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public int NumbersOfQInPack
         {
@@ -112,6 +127,8 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             LoadQuestionPackCommand = new DelegateCommand(LoadPackDialog);
 
+            FullscreenCommand = new DelegateCommand(Fullscreen);
+
             ActivePack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
 
             LoadedPack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
@@ -124,6 +141,17 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             LoadQuestionPack(this, json);
 
+        }
+        public void Fullscreen(object obj)
+        {
+            if (MainWindowState == WindowState.Maximized)
+            {
+                MainWindowState = WindowState.Normal;
+            }
+            else
+            {
+                MainWindowState = WindowState.Maximized;
+            }
         }
         public void NewQuestionPack(object obj)
         {
@@ -154,6 +182,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             {
                 PlayViewModel.GameBegun = false;
                 PlayViewModel.ConfirmPlay = true;
+                PlayViewModel.GameEnded = false;
             }
             PlayViewModel.StopTimer();
 

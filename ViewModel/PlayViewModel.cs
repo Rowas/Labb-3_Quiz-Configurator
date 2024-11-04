@@ -206,7 +206,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             CurrentQuestionCount = 1;
             CorrectAnswers = 0;
-            TimeLimit = PlayPack.TimeLimitInSeconds;
+            TimeLimit = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             TotalQuestionsCount = PlayPack.Questions.Count;
 
             PickQuestion();
@@ -216,6 +216,12 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         private void Timer_Tick(object? sender, EventArgs e)
         {
             TimeLimit -= 1;
+            if (TimeLimit == 0)
+            {
+                QuestionAnswered = true;
+                PlayPack.Questions.RemoveAt(r1);
+                ResponsePicked("TimesUp");
+            }
         }
 
         private void PickQuestion()
@@ -271,14 +277,20 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 CorrectOrNot = "That is Correct! Good Job!";
                 CorrectAnswers++;
             }
+            else if (response == "TimesUp")
+            {
+                CorrectOrNot = $"Time's up. The correct answer was: {CorrectAnswer}";
+            }
             else
             {
                 CorrectOrNot = $"Sorry, wrong answer! The correct answer was: {CorrectAnswer}";
             }
             await Task.Delay(2000);
             QuestionAnswered = false;
-            TimeLimit = PlayPack.TimeLimitInSeconds;
+            CurrentQuestionCount++;
+            TimeLimit = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             PickQuestion();
+            timer.Start();
         }
     }
 }

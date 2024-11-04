@@ -6,7 +6,19 @@
         xmlns:local="clr-namespace:Labb_3___Quiz_Configurator"
         xmlns:view="clr-namespace:Labb_3___Quiz_Configurator.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="700" ResizeMode="NoResize">
+        Title="MainWindow" Height="450" Width="700" ResizeMode="NoResize" WindowState="{Binding MainWindowState}">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding NewQuestionCommand}" Key="Insert" />
+        <KeyBinding Command="{Binding RemoveQuestionCommand}" Key="Delete" />
+        <KeyBinding Command="{Binding AddPackCommand}" Modifiers="Ctrl" Key="N" />
+        <KeyBinding Command="{Binding SaveQuestionPackCommand}" Modifiers="Ctrl" Key="S" />
+        <KeyBinding Command="{Binding LoadQuestionPackCommand}" Modifiers="Ctrl" Key="L" />
+        <KeyBinding Command="{Binding ConfigurationViewModel.PackOptionsCommand}" Modifiers="Ctrl" Key="O" />
+        <KeyBinding Command="{Binding ModeSwitchCommand}" Modifiers="Ctrl" Key="P" />
+        <KeyBinding Command="ApplicationCommands.Close" Modifiers="Alt" Key="F4" />
+        <KeyBinding Command="{Binding FullscreenCommand}" Modifiers="Alt" Key="Enter" />
+        <KeyBinding Command="{Binding FullscreenCommand}" Modifiers="Alt" Key="Return" />
+    </Window.InputBindings>
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CloseCommandHandler"/>

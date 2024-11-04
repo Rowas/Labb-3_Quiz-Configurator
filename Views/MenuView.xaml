@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Views" 
+             xmlns:mw="clr-namespace:Labb_3___Quiz_Configurator"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d">
     <Menu>
         <Menu.Resources>
@@ -12,14 +14,14 @@
         <MenuItem Header="_File" >
             <MenuItem Header="_New Question Pack" Icon="{fa:Icon plus}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
-                      Command="{Binding AddPackCommand}"/>
+                      InputGestureText="Ctrl+N" Command="{Binding AddPackCommand}"/>
             <MenuItem Header="_Load Question Pack" Icon="{fa:Icon folderopen}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}"
-                      Command="{Binding LoadQuestionPackCommand}" >
+                      InputGestureText="Ctrl+L" Command="{Binding LoadQuestionPackCommand}" >
             </MenuItem>
             <MenuItem Header="_Save Question Pack" Icon="{fa:Icon save}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
-                      Command="{Binding SaveQuestionPackCommand}"/>
+                      InputGestureText="Ctrl+S" Command="{Binding SaveQuestionPackCommand}"/>
             <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon minus}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}"
                       Command="{Binding ConfigurationViewModel.RemovePackCommand}"/>
@@ -27,23 +29,23 @@
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
                       Command="{Binding LoadQuestionPackCommand}"/>
             <Separator/>
-            <MenuItem Header="E_xit" Icon="{fa:Icon dooropen}" Command="ApplicationCommands.Close"/>
+            <MenuItem Header="E_xit" Icon="{fa:Icon dooropen}" InputGestureText="Alt+F4" Command="ApplicationCommands.Close"/>
         </MenuItem>
 
         <MenuItem Header="_Edit" 
                   Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" >
-            <MenuItem Header="_Add Question" Icon="{fa:Icon squareplus}" Command="{Binding NewQuestionCommand}"/>
-            <MenuItem Header="_Remove Question" Icon="{fa:Icon squareminus}" Command="{Binding RemoveQuestionCommand}" />
-            <MenuItem Header="_Pack Options" Icon="{fa:Icon squarepen}" Command="{Binding ConfigurationViewModel.PackOptionsCommand}" />
+            <MenuItem Header="_Add Question" Icon="{fa:Icon squareplus}" InputGestureText="Insert" Command="{Binding NewQuestionCommand}"/>
+            <MenuItem Header="_Remove Question" Icon="{fa:Icon squareminus}" InputGestureText="Delete" Command="{Binding RemoveQuestionCommand}" />
+            <MenuItem Header="_Pack Options" Icon="{fa:Icon squarepen}" InputGestureText="Ctrl+O" Command="{Binding ConfigurationViewModel.PackOptionsCommand}" />
         </MenuItem>
 
         <MenuItem Header="_View">
-            <MenuItem Header="_Play" Icon="{fa:Icon circleplay}" Command="{Binding ModeSwitchCommand}" 
+            <MenuItem Header="_Play" Icon="{fa:Icon circleplay}" InputGestureText="Ctrl+P" Command="{Binding ModeSwitchCommand}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" />
-            <MenuItem Header="_Edit" Icon="{fa:Icon filepen}" Command="{Binding ModeSwitchCommand}" 
+            <MenuItem Header="_Edit" Icon="{fa:Icon filepen}" InputGestureText="Ctrl+P" Command="{Binding ModeSwitchCommand}" 
                       Visibility="{Binding PlayMode, Converter={StaticResource boolToVisibilityConverter}}" />
             <Separator/>
-            <MenuItem Header="_Fullscreen" IsEnabled="False" />
+            <MenuItem Header="_Fullscreen" InputGestureText="Alt+Enter/Return" Command="{Binding FullscreenCommand}"/>
         </MenuItem>
     </Menu>
 </UserControl>

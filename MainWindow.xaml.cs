@@ -13,7 +13,6 @@ namespace Labb_3___Quiz_Configurator
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
-
         }
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
