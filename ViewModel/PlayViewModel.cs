@@ -18,10 +18,21 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         private string[] _answerList = new string[4];
         public List<string> _answers = new List<string>();
         private string CorrectAnswer;
-        private bool _isCorrectAnswer;
         private bool _questionAnswered;
         private int r1;
         private bool _gameEnded = false;
+        private int _correctAnswers;
+
+
+        public int CorrectAnswers
+        {
+            get => _correctAnswers;
+            set
+            {
+                _correctAnswers = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public bool QuestionAnswered
         {
@@ -40,16 +51,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             {
                 _gameEnded = value;
                 RaisePropertyChanged();
-            }
-        }
-
-        public bool IsCorrectAnswer
-        {
-            get => _isCorrectAnswer;
-            set
-            {
-                _isCorrectAnswer = value;
-                RaisePropertyChanged(nameof(IsCorrectAnswer));
             }
         }
         public int CurrentQuestionCount
@@ -141,7 +142,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             {
                 _playPack = value;
                 RaisePropertyChanged();
-                RaisePropertyChanged("ActivePack");
             }
         }
 
@@ -156,6 +156,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public DelegateCommand Response2Command { get; }
         public DelegateCommand Response3Command { get; }
         public DelegateCommand Response4Command { get; }
+        public DelegateCommand RestartGameCommand { get; }
 
         public PlayViewModel(MainWindowViewModel? mainWindowViewModel)
         {
@@ -166,6 +167,8 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             timer.Tick += Timer_Tick;
 
             BeginGameCommand = new DelegateCommand(BeginGame);
+
+            RestartGameCommand = new DelegateCommand(RestartGame);
 
             Response1Command = new DelegateCommand(Response1);
             Response2Command = new DelegateCommand(Response2);
@@ -182,15 +185,31 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         {
             timer.Stop();
         }
+
+        private void RestartGame(object obj)
+        {
+            ConfirmPlay = true;
+            GameBegun = false;
+            GameEnded = false;
+            BeginGame(obj);
+        }
         private void BeginGame(object obj)
         {
+            mainWindowViewModel.SaveQuestionPackCommand.Execute(PlayPack.Name);
             ConfirmPlay = !ConfirmPlay;
             GameBegun = !GameBegun;
-            TimeLimit = PlayPack.TimeLimitInSeconds;
-            CurrentQuestionCount = 1;
-            TotalQuestionsCount = PlayPack.Questions.Count;
-            PickQuestion();
 
+            foreach (Question question in mainWindowViewModel.ActivePack.Questions)
+            {
+                PlayPack.Questions.Add(question);
+            }
+
+            CurrentQuestionCount = 1;
+            CorrectAnswers = 0;
+            TimeLimit = PlayPack.TimeLimitInSeconds;
+            TotalQuestionsCount = PlayPack.Questions.Count;
+
+            PickQuestion();
 
             timer.Start();
         }
@@ -249,12 +268,11 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             timer.Stop();
             if (response == CorrectAnswer)
             {
-                IsCorrectAnswer = true;
                 CorrectOrNot = "That is Correct! Good Job!";
+                CorrectAnswers++;
             }
             else
             {
-                IsCorrectAnswer = false;
                 CorrectOrNot = $"Sorry, wrong answer! The correct answer was: {CorrectAnswer}";
             }
             await Task.Delay(2000);

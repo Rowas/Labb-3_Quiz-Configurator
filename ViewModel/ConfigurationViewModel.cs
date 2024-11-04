@@ -1,6 +1,7 @@
 ﻿using Labb_3___Quiz_Configurator.Command;
 using Labb_3___Quiz_Configurator.Dialogs;
 using Labb_3___Quiz_Configurator.Model;
+using System.IO;
 
 namespace Labb_3___Quiz_Configurator.ViewModel
 {
@@ -11,14 +12,16 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         private bool _changesMade = false;
 
         public DelegateCommand PackOptionsCommand { get; }
+        public DelegateCommand RemovePackCommand { get; }
 
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-            PackOptionsCommand = new DelegateCommand(SavePack);
+            PackOptionsCommand = new DelegateCommand(PackOptions);
+            RemovePackCommand = new DelegateCommand(RemovePack);
         }
 
-        public void SavePack(object obj)
+        public void PackOptions(object obj)
         {
             PackOptionsDialog packOptionsDialog = new();
             packOptionsDialog.packName.Text = ActivePack.Name;
@@ -31,6 +34,13 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 ActivePack.Difficulty = (Difficulty)packOptionsDialog.difficulty.SelectedIndex;
                 ActivePack.TimeLimitInSeconds = (int)packOptionsDialog.timeSlider.Value;
             }
+        }
+
+        public void RemovePack(object obj)
+        {
+            File.Delete($"{ActivePack.Name}.json");
+            mainWindowViewModel.ActivePack = null;
+            mainWindowViewModel.LoadPackDialog(this);
         }
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }

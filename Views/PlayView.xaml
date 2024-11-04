@@ -61,5 +61,17 @@
                    Margin="0,75,0,0" FontWeight="Bold" FontSize="20" Foreground="Indigo" 
                    Visibility="{Binding QuestionAnswered, Converter={StaticResource boolToVisibilityConverter}}" />
         </Grid>
+        <Grid Visibility="{Binding GameEnded, Converter={StaticResource boolToVisibilityConverter}}">
+            <TextBlock Text="Game Over" FontSize="30" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            <TextBlock FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,80,0,0" >
+                <Run Text="You got" />
+                <Run Text="{Binding CorrectAnswers}" />
+                <Run Text="out of" />
+                <Run Text="{Binding TotalQuestionsCount}" />
+                <Run Text="questions correct!" />
+            </TextBlock>
+            <Button Content="Restart" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Margin="0,150,0,0" Width="100" Height="35" Command="{Binding RestartGameCommand}" />
+        </Grid>
     </Grid>
 </UserControl>

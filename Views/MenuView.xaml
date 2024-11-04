@@ -13,26 +13,17 @@
             <MenuItem Header="_New Question Pack" Icon="{fa:Icon plus}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
                       Command="{Binding AddPackCommand}"/>
-            <MenuItem Header="_Select Question Pack" Icon="{fa:Icon folderopen}" 
+            <MenuItem Header="_Load Question Pack" Icon="{fa:Icon folderopen}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}"
-                      ItemsSource="{Binding Packs}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-                            <Run Text="{Binding Name}" />
-                            <Run Text="  (" />
-                            <Run Text="{Binding Difficulty}" />
-                            <Run Text=")" />
-                        </TextBlock>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                      Command="{Binding LoadQuestionPackCommand}" >
             </MenuItem>
             <MenuItem Header="_Save Question Pack" Icon="{fa:Icon save}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
                       Command="{Binding SaveQuestionPackCommand}"/>
             <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon minus}" 
-                      Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" />
-            <MenuItem Header="_Import Questions" IsEnabled="True" Icon="{fa:Icon cloudarrowdown}" 
+                      Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}"
+                      Command="{Binding ConfigurationViewModel.RemovePackCommand}"/>
+            <MenuItem Header="_Import Questions" IsEnabled="False" Icon="{fa:Icon cloudarrowdown}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
                       Command="{Binding LoadQuestionPackCommand}"/>
             <Separator/>
@@ -42,7 +33,7 @@
         <MenuItem Header="_Edit" 
                   Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" >
             <MenuItem Header="_Add Question" Icon="{fa:Icon squareplus}" Command="{Binding NewQuestionCommand}"/>
-            <MenuItem Header="_Remove Question" Icon="{fa:Icon squareminus}" />
+            <MenuItem Header="_Remove Question" Icon="{fa:Icon squareminus}" Command="{Binding RemoveQuestionCommand}" />
             <MenuItem Header="_Pack Options" Icon="{fa:Icon squarepen}" Command="{Binding ConfigurationViewModel.PackOptionsCommand}" />
         </MenuItem>
 
