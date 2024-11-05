@@ -1,5 +1,6 @@
 ﻿using Labb_3___Quiz_Configurator.Command;
 using Labb_3___Quiz_Configurator.Dialogs;
+using Labb_3___Quiz_Configurator.JSON;
 using Labb_3___Quiz_Configurator.Model;
 using Labb_3___Quiz_Configurator.Views;
 using Microsoft.Win32;
@@ -7,11 +8,11 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Windows;
+
 namespace Labb_3___Quiz_Configurator.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
-        private string json;
         private Question? activeQuestion;
         private QuestionPackViewModel? _activePack;
         private QuestionPackViewModel? _loadedPack;
@@ -19,6 +20,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public ObservableCollection<QuestionPackViewModel> _packs;
         public ObservableCollection<QuestionPackViewModel> Packs { get => _packs; set { _packs = value; RaisePropertyChanged(); } }
         public ConfigurationViewModel ConfigurationViewModel { get; }
+        public JSONDataHandling? jsonDataHandling;
         public DelegateCommand ModeSwitchCommand { get; }
         public DelegateCommand AddPackCommand { get; }
         public DelegateCommand NewQuestionCommand { get; }
@@ -27,6 +29,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public DelegateCommand LoadQuestionPackCommand { get; }
         public DelegateCommand FullscreenCommand { get; }
         public PlayViewModel PlayViewModel { get; }
+
         public WindowState _mainWindowState = WindowState.Normal;
 
         public JsonSerializerOptions options = new JsonSerializerOptions()
@@ -37,7 +40,8 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             WriteIndented = true,
             AllowTrailingCommas = true,
         };
-
+        private bool execute = true;
+        private string json;
         private bool _playMode = false;
         private bool _configMode = true;
         private int _numberOfQInPack;
@@ -111,13 +115,15 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
         public MainWindowViewModel()
         {
+            jsonDataHandling = new JSONDataHandling(this);
+
             PlayViewModel = new PlayViewModel(this);
 
             ConfigurationViewModel = new ConfigurationViewModel(this);
 
             ModeSwitchCommand = new DelegateCommand(ModeSwitch);
 
-            AddPackCommand = new DelegateCommand(NewQuestionPack);
+            AddPackCommand = new DelegateCommand(NewQuestionPackDialog);
 
             NewQuestionCommand = new DelegateCommand(NewQuestion);
 
@@ -139,7 +145,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             Packs.Add(ActivePack);
 
-            LoadQuestionPack(this, json);
+            jsonDataHandling.LoadQuestionPack(this);
 
         }
         public void Fullscreen(object obj)
@@ -153,14 +159,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 MainWindowState = WindowState.Maximized;
             }
         }
-        public void NewQuestionPack(object obj)
-        {
-            CreateNewPackDialog createNewPackDialog = new();
-            createNewPackDialog.ShowDialog();
-            SaveQuestionPack(ActivePack);
-            ActivePack = new QuestionPackViewModel(new QuestionPack(createNewPackDialog.packName.Text, (Difficulty)createNewPackDialog.difficulty.SelectedIndex, (int)createNewPackDialog.timeSlider.Value));
-            SaveQuestionPack(ActivePack);
-        }
+
         public void NewQuestion(object obj)
         {
             Question question = new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
@@ -187,7 +186,19 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             PlayViewModel.StopTimer();
 
         }
-        public void SavePackDialog(object obj)
+        public async void NewQuestionPackDialog(object obj)
+        {
+            CreateNewPackDialog createNewPackDialog = new();
+            createNewPackDialog.ShowDialog();
+            if (ActivePack != null)
+            {
+                await jsonDataHandling.SaveQuestionPack(ActivePack);
+            }
+            ActivePack = new QuestionPackViewModel(new QuestionPack(createNewPackDialog.packName.Text,
+                (Difficulty)createNewPackDialog.difficulty.SelectedIndex, (int)createNewPackDialog.timeSlider.Value));
+            await jsonDataHandling.SaveQuestionPack(ActivePack);
+        }
+        public async void SavePackDialog(object obj)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Question Pack Files (*.json)|*.json";
@@ -195,60 +206,22 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             {
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    SaveQuestionPack(this);
+                    await jsonDataHandling.SaveQuestionPack(this);
                 }
             }
             else
             {
-                SaveQuestionPack(this);
+                await jsonDataHandling.SaveQuestionPack(this);
             }
         }
-        public void SaveQuestionPack(object obj)
-        {
-            string json = JsonSerializer.Serialize(ActivePack, options);
-            File.WriteAllText($"{ActivePack.Name}.json", json);
-            if (!Packs.Contains(ActivePack))
-            {
-                Packs.Add(ActivePack);
-            }
-        }
-        public void LoadPackDialog(object obj)
+        public async void LoadPackDialog(object obj)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Question Pack Files (*.json)|*.json";
             if (openFileDialog.ShowDialog() == true)
             {
                 json = File.ReadAllText(openFileDialog.FileName);
-                LoadQuestionPack(obj, json);
-            }
-        }
-        public void LoadQuestionPack(object obj, string json)
-        {
-            if (json == null)
-            {
-                try
-                {
-                    json = File.ReadAllText($"Default Pack.json");
-                }
-                catch (Exception)
-                {
-                    ActivePack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
-                    SaveQuestionPack(this);
-                    return;
-                }
-            }
-            QuestionPack LoadedPack = JsonSerializer.Deserialize<QuestionPack>(json, options);
-            if (ActivePack == null)
-            {
-                ActivePack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
-            }
-            ActivePack.Name = LoadedPack.Name;
-            ActivePack.Difficulty = LoadedPack.Difficulty;
-            ActivePack.TimeLimitInSeconds = LoadedPack.TimeLimitInSeconds;
-            ActivePack.Questions.Clear();
-            foreach (Question q in LoadedPack.Questions)
-            {
-                ActivePack.Questions.Add(q);
+                await jsonDataHandling.LoadQuestionPack(obj);
             }
         }
     }

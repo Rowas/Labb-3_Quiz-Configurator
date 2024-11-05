@@ -269,7 +269,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             PlayPack.Questions.RemoveAt(r1);
             ResponsePicked(AnswerList[3]);
         }
-        public async void ResponsePicked(string response)
+        public async Task ResponsePicked(string response)
         {
             timer.Stop();
             if (response == CorrectAnswer)
