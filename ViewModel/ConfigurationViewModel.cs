@@ -13,12 +13,14 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
         public DelegateCommand PackOptionsCommand { get; }
         public DelegateCommand RemovePackCommand { get; }
+        public DelegateCommand ImportQuestionsCommand { get; }
 
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
             PackOptionsCommand = new DelegateCommand(PackOptions);
             RemovePackCommand = new DelegateCommand(RemovePack);
+            ImportQuestionsCommand = new DelegateCommand(ImportQuestionsDialog);
         }
 
         public void PackOptions(object obj)
@@ -28,7 +30,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             packOptionsDialog.difficulty.SelectedItem = ActivePack.Difficulty;
             packOptionsDialog.timeSlider.Value = ActivePack.TimeLimitInSeconds;
 
-            if (packOptionsDialog.ShowDialog() == true) ;
+            if (packOptionsDialog.ShowDialog() == true)
             {
                 ActivePack.Name = packOptionsDialog.packName.Text;
                 ActivePack.Difficulty = (Difficulty)packOptionsDialog.difficulty.SelectedIndex;
@@ -36,6 +38,16 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             }
         }
 
+        public async void ImportQuestionsDialog(object obj)
+        {
+            QuestionImportDialog questionImportDialog = new();
+            questionImportDialog.category.ItemsSource = await mainWindowViewModel.jsonQuestionImport.ImportCategories();
+            if (questionImportDialog.ShowDialog() == true)
+            {
+                await mainWindowViewModel.jsonQuestionImport.ImportQuestions((int)questionImportDialog.questionSlider.Value, questionImportDialog.difficulty.SelectedIndex.ToString(), questionImportDialog.category.SelectedItem.ToString());
+                await mainWindowViewModel.jsonDataHandling.LoadQuestionPack(obj, json);
+            }
+        }
         public void RemovePack(object obj)
         {
             File.Delete($"{ActivePack.Name}.json");
@@ -44,5 +56,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         }
 
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
+        public string? json { get; private set; }
     }
 }

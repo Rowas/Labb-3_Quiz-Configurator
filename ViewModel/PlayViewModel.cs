@@ -7,23 +7,64 @@ namespace Labb_3___Quiz_Configurator.ViewModel
     internal class PlayViewModel : ViewModelBase
     {
         static Random rnd = new Random();
+
+        private readonly MainWindowViewModel? mainWindowViewModel;
+        private QuestionPackViewModel? _activePack;
+
         private QuestionPackViewModel? _playPack;
+        private int r1;
+
+        private List<string> _answerList = new();
+        private string[] _answerArray = new string[4];
+
         private bool _confirmPlay = true;
         private bool _gameBegun = false;
-        private int _currentQuestionCount;
+        private int _currentQuestionCount = 1;
         private int _totalQuestionsCount;
         private int _timeLimit;
         private string _currentAskedQuestion;
         private string _correctOrNot;
-        private string[] _answerList = new string[4];
-        public List<string> _answers = new List<string>();
-        private string CorrectAnswer;
         private bool _questionAnswered;
-        private int r1;
+        private bool _nextQuestionPicked = false;
         private bool _gameEnded = false;
-        private int _correctAnswers;
+        private int _correctAnswers = 0;
 
-
+        public bool ConfirmPlay
+        {
+            get => _confirmPlay;
+            set
+            {
+                _confirmPlay = value;
+                RaisePropertyChanged();
+            }
+        }
+        public bool GameBegun
+        {
+            get => _gameBegun;
+            set
+            {
+                _gameBegun = value;
+                RaisePropertyChanged();
+            }
+        }
+        public int CurrentQuestionCount
+        {
+            get => _currentQuestionCount;
+            set
+            {
+                _currentQuestionCount = value;
+                RaisePropertyChanged();
+            }
+        }
+        public int TotalQuestionsCount
+        {
+            get => _totalQuestionsCount;
+            set
+            {
+                _totalQuestionsCount = value;
+                RaisePropertyChanged();
+            }
+        }
         public int CorrectAnswers
         {
             get => _correctAnswers;
@@ -43,6 +84,15 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public bool NextQuestionPicked
+        {
+            get => _nextQuestionPicked;
+            set
+            {
+                _nextQuestionPicked = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public bool GameEnded
         {
@@ -53,40 +103,23 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public int CurrentQuestionCount
+
+        public string[] AnswerArray
         {
-            get => _currentQuestionCount;
+            get => _answerArray;
             set
             {
-                _currentQuestionCount = value;
+                _answerArray = value;
                 RaisePropertyChanged();
             }
         }
-        public string[] AnswerList
+        public List<string> AnswerList
         {
             get => _answerList;
             set
             {
                 _answerList = value;
-                RaisePropertyChanged();
-            }
-        }
-        public List<string> Answers
-        {
-            get => _answers;
-            set
-            {
-                _answers = value;
-                RaisePropertyChanged(nameof(Answers));
-            }
-        }
-        public int TotalQuestionsCount
-        {
-            get => _totalQuestionsCount;
-            set
-            {
-                _totalQuestionsCount = value;
-                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(AnswerList));
             }
         }
         public string CurrentAskedQuestion
@@ -116,25 +149,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public bool GameBegun
-        {
-            get => _gameBegun;
-            set
-            {
-                _gameBegun = value;
-                RaisePropertyChanged();
-            }
-        }
-        public bool ConfirmPlay
-        {
-            get => _confirmPlay;
-            set
-            {
-                _confirmPlay = value;
-                RaisePropertyChanged();
-            }
-        }
-
         public QuestionPackViewModel? PlayPack
         {
             get => _playPack;
@@ -145,12 +159,11 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             }
         }
 
-        private readonly MainWindowViewModel? mainWindowViewModel;
-        private QuestionPackViewModel? _activePack;
+
 
         private DispatcherTimer timer;
+
         public DelegateCommand BeginGameCommand { get; }
-        public DelegateCommand StartTimerCommand { get; }
         public DelegateCommand StopTimerCommand { get; }
         public DelegateCommand Response1Command { get; }
         public DelegateCommand Response2Command { get; }
@@ -177,10 +190,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             PlayPack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
         }
-        public void StartTimer()
-        {
-            timer.Start();
-        }
         public void StopTimer()
         {
             timer.Stop();
@@ -198,25 +207,18 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             mainWindowViewModel.SaveQuestionPackCommand.Execute(PlayPack.Name);
             ConfirmPlay = !ConfirmPlay;
             GameBegun = !GameBegun;
-
             foreach (Question question in mainWindowViewModel.ActivePack.Questions)
             {
                 PlayPack.Questions.Add(question);
             }
-
-            CurrentQuestionCount = 1;
-            CorrectAnswers = 0;
-            TimeLimit = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             TotalQuestionsCount = PlayPack.Questions.Count;
-
+            CurrentQuestionCount = 1;
             PickQuestion();
-
-            timer.Start();
         }
         private void Timer_Tick(object? sender, EventArgs e)
         {
             TimeLimit -= 1;
-            if (TimeLimit == 0)
+            if (TimeLimit <= 0)
             {
                 QuestionAnswered = true;
                 PlayPack.Questions.RemoveAt(r1);
@@ -232,65 +234,65 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 GameEnded = true;
                 return;
             }
-            Answers.Clear();
+            AnswerList.Clear();
             r1 = rnd.Next(PlayPack.Questions.Count);
             CurrentAskedQuestion = PlayPack.Questions[r1].Query;
-            CorrectAnswer = PlayPack.Questions[r1].CorrectAnswer;
-            Answers.Add(PlayPack.Questions[r1].CorrectAnswer);
+            AnswerList.Add(PlayPack.Questions[r1].CorrectAnswer);
             foreach (string IncorrectAnswer in PlayPack.Questions[r1].IncorrectAnswers)
             {
-                Answers.Add(IncorrectAnswer);
+                AnswerList.Add(IncorrectAnswer);
             }
-            Answers = Answers.OrderBy(_ => Guid.NewGuid()).ToList();
-            AnswerList = Answers.ToArray();
+            AnswerArray = AnswerList.OrderBy(_ => Guid.NewGuid()).ToList().ToArray();
+            NextQuestionPicked = true;
+            timer.Start();
         }
 
         public void Response1(object obj)
         {
             QuestionAnswered = true;
-            PlayPack.Questions.RemoveAt(r1);
-            ResponsePicked(AnswerList[0]);
+            NextQuestionPicked = false;
+            ResponsePicked(AnswerArray[0]);
         }
         public void Response2(object obj)
         {
             QuestionAnswered = true;
-            PlayPack.Questions.RemoveAt(r1);
-            ResponsePicked(AnswerList[1]);
+            NextQuestionPicked = false;
+            ResponsePicked(AnswerArray[1]);
         }
         public void Response3(object obj)
         {
             QuestionAnswered = true;
-            PlayPack.Questions.RemoveAt(r1);
-            ResponsePicked(AnswerList[2]);
+            NextQuestionPicked = false;
+            ResponsePicked(AnswerArray[2]);
         }
         public void Response4(object obj)
         {
             QuestionAnswered = true;
-            PlayPack.Questions.RemoveAt(r1);
-            ResponsePicked(AnswerList[3]);
+            NextQuestionPicked = false;
+            ResponsePicked(AnswerArray[3]);
         }
         public async Task ResponsePicked(string response)
         {
             timer.Stop();
-            if (response == CorrectAnswer)
+            if (response == PlayPack.Questions[r1].CorrectAnswer)
             {
                 CorrectOrNot = "That is Correct! Good Job!";
                 CorrectAnswers++;
             }
             else if (response == "TimesUp")
             {
-                CorrectOrNot = $"Time's up. The correct answer was: {CorrectAnswer}";
+                CorrectOrNot = $"Time's up. The correct answer was: {PlayPack.Questions[r1].CorrectAnswer}";
             }
             else
             {
-                CorrectOrNot = $"Sorry, wrong answer! The correct answer was: {CorrectAnswer}";
+                CorrectOrNot = $"Sorry, wrong answer! The correct answer was: {PlayPack.Questions[r1].CorrectAnswer}";
             }
             await Task.Delay(2000);
+            PlayPack.Questions.RemoveAt(r1);
             QuestionAnswered = false;
             CurrentQuestionCount++;
             TimeLimit = mainWindowViewModel.ActivePack.TimeLimitInSeconds;
             PickQuestion();
-            timer.Start();
         }
     }
 }

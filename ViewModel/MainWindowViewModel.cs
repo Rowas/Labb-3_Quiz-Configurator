@@ -2,7 +2,6 @@
 using Labb_3___Quiz_Configurator.Dialogs;
 using Labb_3___Quiz_Configurator.JSON;
 using Labb_3___Quiz_Configurator.Model;
-using Labb_3___Quiz_Configurator.Views;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -14,13 +13,14 @@ namespace Labb_3___Quiz_Configurator.ViewModel
     internal class MainWindowViewModel : ViewModelBase
     {
         private Question? activeQuestion;
+
         private QuestionPackViewModel? _activePack;
-        private QuestionPackViewModel? _loadedPack;
-        public MenuView MenuView { get; }
-        public ObservableCollection<QuestionPackViewModel> _packs;
-        public ObservableCollection<QuestionPackViewModel> Packs { get => _packs; set { _packs = value; RaisePropertyChanged(); } }
+
+        public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
         public JSONDataHandling? jsonDataHandling;
+        public JSONQuestionImport? jsonQuestionImport;
+
         public DelegateCommand ModeSwitchCommand { get; }
         public DelegateCommand AddPackCommand { get; }
         public DelegateCommand NewQuestionCommand { get; }
@@ -102,20 +102,12 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 ConfigurationViewModel.RaisePropertyChanged();
             }
         }
-        public QuestionPackViewModel? LoadedPack
-        {
-            get => _loadedPack;
-            set
-            {
-                _loadedPack = value;
-                RaisePropertyChanged();
-                ConfigurationViewModel.RaisePropertyChanged();
-            }
-        }
 
         public MainWindowViewModel()
         {
             jsonDataHandling = new JSONDataHandling(this);
+
+            jsonQuestionImport = new JSONQuestionImport();
 
             PlayViewModel = new PlayViewModel(this);
 
@@ -137,15 +129,13 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             ActivePack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
 
-            LoadedPack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
-
             Packs = new ObservableCollection<QuestionPackViewModel>();
 
             Question? ActiveQuestion = null;
 
             Packs.Add(ActivePack);
 
-            jsonDataHandling.LoadQuestionPack(this);
+            jsonDataHandling.LoadQuestionPack(this, json);
 
         }
         public void Fullscreen(object obj)
@@ -184,6 +174,9 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 PlayViewModel.GameEnded = false;
             }
             PlayViewModel.StopTimer();
+            PlayViewModel.TimeLimit = ActivePack.TimeLimitInSeconds;
+            PlayViewModel.TotalQuestionsCount = ActivePack.Questions.Count;
+            PlayViewModel.PlayPack.Name = ActivePack.Name;
 
         }
         public async void NewQuestionPackDialog(object obj)
@@ -221,7 +214,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             if (openFileDialog.ShowDialog() == true)
             {
                 json = File.ReadAllText(openFileDialog.FileName);
-                await jsonDataHandling.LoadQuestionPack(obj);
+                await jsonDataHandling.LoadQuestionPack(obj, json);
             }
         }
     }

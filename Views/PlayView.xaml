@@ -11,9 +11,17 @@
     </UserControl.Resources>
     <Grid>
         <StackPanel VerticalAlignment="Center" Visibility="{Binding ConfirmPlay, Converter={StaticResource boolToVisibilityConverter}}">
-            <WrapPanel HorizontalAlignment="Center" >
+            <WrapPanel HorizontalAlignment="Center">
                 <Label FontWeight="DemiBold" Content="Pack chosen:" />
                 <Label Content="{Binding PlayPack.Name}" />
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center" >
+                <Label FontWeight="DemiBold" Content="Questions in pack:" />
+                <Label Content="{Binding TotalQuestionsCount}" />
+            </WrapPanel>
+            <WrapPanel HorizontalAlignment="Center" >
+                <Label FontWeight="DemiBold" Content="Time limit per Question:" />
+                <Label Content="{Binding TimeLimit}" />
             </WrapPanel>
             <Button HorizontalAlignment="Center" VerticalAlignment="Center" Content="Press to Start Playing" Width="200" 
                     Command="{Binding BeginGameCommand}" />
@@ -45,17 +53,17 @@
             <TextBlock Grid.ColumnSpan="2" Grid.Row="1" FontSize="18" FontWeight="Bold" Text="{Binding CurrentAskedQuestion}" 
                    TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50"/>
             <Button Grid.Column="0" Grid.Row="1" Margin="15" Width="200" Height="75" 
-                Content="{Binding AnswerList[0]}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Command="{Binding Response1Command}" />
+                Content="{Binding AnswerArray[0]}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                    Command="{Binding Response1Command}" IsEnabled="{Binding NextQuestionPicked}" />
             <Button Grid.Column="0" Grid.Row="2" Margin="15" Width="200" Height="75" 
-                Content="{Binding AnswerList[1]}" VerticalAlignment="Top" HorizontalAlignment="Right"
-                    Command="{Binding Response2Command}" />
+                Content="{Binding AnswerArray[1]}" VerticalAlignment="Top" HorizontalAlignment="Right"
+                    Command="{Binding Response2Command}" IsEnabled="{Binding NextQuestionPicked}" />
             <Button Grid.Column="1" Grid.Row="1" Margin="15" Width="200" Height="75" 
-                Content="{Binding AnswerList[2]}" VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                    Command="{Binding Response3Command}" />
+                Content="{Binding AnswerArray[2]}" VerticalAlignment="Bottom" HorizontalAlignment="Left"
+                    Command="{Binding Response3Command}" IsEnabled="{Binding NextQuestionPicked}" />
             <Button Grid.Column="1" Grid.Row="2" Margin="15" Width="200" Height="75" 
-                Content="{Binding AnswerList[3]}" VerticalAlignment="Top" HorizontalAlignment="Left"
-                    Command="{Binding Response4Command}" />
+                Content="{Binding AnswerArray[3]}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                    Command="{Binding Response4Command}" IsEnabled="{Binding NextQuestionPicked}" />
             <Label Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
                    VerticalAlignment="Center" Content="{Binding CorrectOrNot}" 
                    Margin="0,75,0,0" FontWeight="Bold" FontSize="20" Foreground="Indigo" 

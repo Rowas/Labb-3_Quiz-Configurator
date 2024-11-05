@@ -24,7 +24,7 @@ namespace Labb_3___Quiz_Configurator.JSON
             WriteIndented = true,
             AllowTrailingCommas = true,
         };
-        public async Task LoadQuestionPack(object obj)
+        public async Task LoadQuestionPack(object obj, string? json)
         {
             if (json == null)
             {
@@ -47,7 +47,15 @@ namespace Labb_3___Quiz_Configurator.JSON
             }
             mainWindowViewModel.ActivePack.Name = LoadedPack.Name;
             mainWindowViewModel.ActivePack.Difficulty = LoadedPack.Difficulty;
-            mainWindowViewModel.ActivePack.TimeLimitInSeconds = LoadedPack.TimeLimitInSeconds;
+            try
+            {
+                mainWindowViewModel.ActivePack.TimeLimitInSeconds = LoadedPack.TimeLimitInSeconds;
+            }
+            catch (Exception)
+            {
+                mainWindowViewModel.ActivePack.TimeLimitInSeconds = 30;
+            }
+
             mainWindowViewModel.ActivePack.Questions.Clear();
             foreach (Question q in LoadedPack.Questions)
             {
