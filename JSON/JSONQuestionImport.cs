@@ -32,7 +32,10 @@ namespace Labb_3___Quiz_Configurator.JSON
                 {
                     string jsonStream = await response.Content.ReadAsStringAsync();
                     OTDBcategory oTDBcategory = JsonSerializer.Deserialize<OTDBcategory>(jsonStream);
-
+                    foreach (char category in oTDBcategory.name)
+                    {
+                        Categories.Add(category.ToString());
+                    }
                     return Categories;
                 }
                 else
