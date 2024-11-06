@@ -196,19 +196,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         }
         public async void SavePackDialog(object obj)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Question Pack Files (*.json)|*.json";
-            if (!Packs.Contains(ActivePack))
-            {
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    await jsonDataHandling.SaveQuestionPack(this);
-                }
-            }
-            else
-            {
-                await jsonDataHandling.SaveQuestionPack(this);
-            }
+            await jsonDataHandling.SaveQuestionPack(this);
         }
         public async void LoadPackDialog(object obj)
         {
