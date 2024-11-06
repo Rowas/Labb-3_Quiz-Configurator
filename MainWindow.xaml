@@ -18,6 +18,7 @@
         <KeyBinding Command="ApplicationCommands.Close" Modifiers="Alt" Key="F4" />
         <KeyBinding Command="{Binding FullscreenCommand}" Modifiers="Alt" Key="Enter" />
         <KeyBinding Command="{Binding FullscreenCommand}" Modifiers="Alt" Key="Return" />
+        <KeyBinding Command="{Binding ConfigurationViewModel.ImportQuestionsCommand}" Modifiers="Ctrl" Key="I" />
     </Window.InputBindings>
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"

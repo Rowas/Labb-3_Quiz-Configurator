@@ -27,7 +27,7 @@
                       Command="{Binding ConfigurationViewModel.RemovePackCommand}"/>
             <MenuItem Header="_Import New Question Pack" Icon="{fa:Icon cloudarrowdown}" 
                       Visibility="{Binding ConfigMode, Converter={StaticResource boolToVisibilityConverter}}" 
-                      Command="{Binding ConfigurationViewModel.ImportQuestionsCommand}"/>
+                      InputGestureText="Ctrl+I" Command="{Binding ConfigurationViewModel.ImportQuestionsCommand}"/>
             <Separator/>
             <MenuItem Header="E_xit" Icon="{fa:Icon dooropen}" InputGestureText="Alt+F4" Command="ApplicationCommands.Close"/>
         </MenuItem>

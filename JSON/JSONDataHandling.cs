@@ -75,9 +75,5 @@ namespace Labb_3___Quiz_Configurator.JSON
             }
             jsonStream.Close();
         }
-        public async Task AddImportedQuestions(JsonElement? json, Difficulty difficulty)
-        {
-
-        }
     }
 }
