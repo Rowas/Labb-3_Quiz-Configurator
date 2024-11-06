@@ -14,11 +14,8 @@ namespace Labb_3___Quiz_Configurator.Dialogs
         }
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
+            create.CommandParameter = "True";
             this.Close();
-        }
-        private (bool, string, string?, double) NewPack(object sender, ExecutedRoutedEventArgs e)
-        {
-            return (true, packName.Text, difficulty.SelectedValue.ToString(), timeSlider.Value);
         }
     }
 }

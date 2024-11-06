@@ -14,6 +14,7 @@ namespace Labb_3___Quiz_Configurator.Dialogs
         }
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
+            import.CommandParameter = "True";
             this.Close();
         }
     }

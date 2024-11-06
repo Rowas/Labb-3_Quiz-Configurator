@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb_3___Quiz_Configurator.Dialogs"
         mc:Ignorable="d"
-        Title="New Question Pack" Height="260" Width="195" WindowStyle="ToolWindow">
+        Title="New Question Pack" Height="260" Width="195" WindowStyle="ToolWindow" ResizeMode="NoResize">
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close"
                         Executed="CloseCommandHandler"/>
@@ -32,7 +32,7 @@
                 <Slider x:Name="timeSlider" DockPanel.Dock="Top" Margin="5 0 5 0" Minimum="10" Maximum="60" Value="30" TickFrequency="5" IsSnapToTickEnabled="True" />
             </DockPanel>
             <WrapPanel HorizontalAlignment="Center" Margin="5 0 5 10">
-                <Button Content="Create" Width="75" Margin="5" Command="ApplicationCommands.Close" />
+                <Button x:Name="create" Content="Create" Width="75" Margin="5" Command="ApplicationCommands.Close" CommandParameter="False"/>
             </WrapPanel>
         </StackPanel>
     </Grid>

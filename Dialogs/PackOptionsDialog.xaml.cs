@@ -14,12 +14,8 @@ namespace Labb_3___Quiz_Configurator.Dialogs
         }
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {
+            update.CommandParameter = "True";
             this.Close();
         }
-        private (bool, string, string?, double) SaveChanges(object sender, ExecutedRoutedEventArgs e)
-        {
-            return (true, packName.Text, difficulty.SelectedValue.ToString(), timeSlider.Value);
-        }
-
     }
 }

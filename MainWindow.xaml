@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Labb_3___Quiz_Configurator"
         xmlns:view="clr-namespace:Labb_3___Quiz_Configurator.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="700" ResizeMode="NoResize" WindowState="{Binding MainWindowState}">
+        Title="MainWindow" Height="450" Width="725" ResizeMode="NoResize" WindowState="{Binding MainWindowState}">
     <Window.InputBindings>
         <KeyBinding Command="{Binding NewQuestionCommand}" Key="Insert" />
         <KeyBinding Command="{Binding RemoveQuestionCommand}" Key="Delete" />

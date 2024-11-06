@@ -2,64 +2,88 @@
 using Labb_3___Quiz_Configurator.ViewModel;
 using System.Net.Http;
 using System.Text.Json;
+using System.Web;
 
 namespace Labb_3___Quiz_Configurator.JSON
 {
     class JSONQuestionImport : ViewModelBase
     {
-        private string apiToken;
-        private string URL;
-        private List<string> _categories = new();
-
-        public List<string> Categories
+        public JsonSerializerOptions options = new JsonSerializerOptions()
         {
-            get => _categories;
-            set
-            {
-                _categories = value;
-                RaisePropertyChanged();
-            }
-        }
+            IncludeFields = true,
+            UnmappedMemberHandling = System.Text.Json.Serialization.JsonUnmappedMemberHandling.Skip,
+            PropertyNameCaseInsensitive = true,
+            WriteIndented = true,
+            AllowTrailingCommas = true,
+        };
+        private string URL;
+
+        private string? apiKey;
+
+        private List<(int, string)> categories = new();
+
+        private List<OTDBcategory> LoadedCategories = new();
+
+        private List<Questions> LoadedQuestions = new();
 
         public JSONDataHandling? jsonDataHandling;
 
-        public async Task<List<string>?> ImportCategories()
+        private readonly MainWindowViewModel? mainWindowViewModel;
+
+        public JSONQuestionImport(MainWindowViewModel? mainWindowViewModel)
+        {
+            this.mainWindowViewModel = mainWindowViewModel;
+
+        }
+        public async Task<List<(int, string)>?> ImportCategories()
         {
             using (var httpClient = new HttpClient())
             {
-                var response = await httpClient.GetAsync("https://opentdb.com/api_category.php");
-                if (response.IsSuccessStatusCode)
+                JsonElement json = JsonDocument.Parse(await httpClient.GetStringAsync("https://opentdb.com/api_category.php")).RootElement;
+                json = json.GetProperty("trivia_categories");
+                LoadedCategories = new List<OTDBcategory>(JsonSerializer.Deserialize<List<OTDBcategory>>(json.ToString()));
+                foreach (var category in LoadedCategories)
                 {
-                    string jsonStream = await response.Content.ReadAsStringAsync();
-                    OTDBcategory oTDBcategory = JsonSerializer.Deserialize<OTDBcategory>(jsonStream);
-                    foreach (char category in oTDBcategory.name)
-                    {
-                        Categories.Add(category.ToString());
-                    }
-                    return Categories;
+                    categories.Add((category.id, category.name));
                 }
-                else
-                {
-                    return null;
-                }
+
+                return categories;
             }
         }
-        public async Task<string?> ImportQuestions(int numberOfQuestions, string difficultyOfQuestions, string category)
+        public async void GetApiKey()
         {
+            URL = "https://opentdb.com/api_token.php?command=request";
             using (var httpClient = new HttpClient())
             {
-                apiToken = await httpClient.GetStringAsync("https://opentdb.com/api_token.php?command=request");
-                URL = $"https://opentdb.com/api.php?amount={numberOfQuestions}&difficulty={difficultyOfQuestions}&type=multiple&category={category}&token={apiToken}";
-                var response = await httpClient.GetAsync(URL);
-                if (response.IsSuccessStatusCode)
+                JsonElement json = JsonDocument.Parse(await httpClient.GetStringAsync(URL)).RootElement;
+                json = json.GetProperty("token");
+                apiKey = JsonSerializer.Deserialize<string>(json, options);
+            }
+        }
+        public async Task ImportQuestions(int numberOfQuestions, Difficulty difficultyOfQuestions, int category)
+        {
+            if (apiKey == null)
+            {
+                GetApiKey();
+            }
+            using (var httpClient = new HttpClient())
+            {
+                URL = $"https://opentdb.com/api.php?amount={numberOfQuestions}&category={category}" +
+                    $"&difficulty={difficultyOfQuestions.ToString().ToLower()}&type=multiple" +
+                    $"&token={apiKey}";
+                JsonElement json = JsonDocument.Parse(await httpClient.GetStringAsync(URL)).RootElement;
+                json = json.GetProperty("results");
+                LoadedQuestions = JsonSerializer.Deserialize<List<Questions>>(json, options);
+                foreach (Questions question in LoadedQuestions)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    return json;
+                    mainWindowViewModel.ActivePack.Questions.Add(new Questions(HttpUtility.HtmlDecode(question.Question),
+                        HttpUtility.HtmlDecode(question.Correct_Answer),
+                        HttpUtility.HtmlDecode(question.Incorrect_Answers[0]),
+                        HttpUtility.HtmlDecode(question.Incorrect_Answers[1]),
+                        HttpUtility.HtmlDecode(question.Incorrect_Answers[2])));
+
                 }
-                else
-                {
-                    return response.ReasonPhrase;
-                }
+
             }
         }
     }

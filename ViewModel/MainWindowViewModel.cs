@@ -12,7 +12,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 {
     internal class MainWindowViewModel : ViewModelBase
     {
-        private Question? activeQuestion;
+        private Questions? activeQuestion;
 
         private QuestionPackViewModel? _activePack;
 
@@ -83,7 +83,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public Question? ActiveQuestion
+        public Questions? ActiveQuestion
         {
             get => this.activeQuestion;
             set
@@ -107,7 +107,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         {
             jsonDataHandling = new JSONDataHandling(this);
 
-            jsonQuestionImport = new JSONQuestionImport();
+            jsonQuestionImport = new JSONQuestionImport(this);
 
             PlayViewModel = new PlayViewModel(this);
 
@@ -131,7 +131,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             Packs = new ObservableCollection<QuestionPackViewModel>();
 
-            Question? ActiveQuestion = null;
+            Questions? ActiveQuestion = null;
 
             Packs.Add(ActivePack);
 
@@ -152,7 +152,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
         public void NewQuestion(object obj)
         {
-            Question question = new Question("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
+            Questions question = new Questions("New Question", string.Empty, string.Empty, string.Empty, string.Empty);
             ActivePack.Questions.Add(question);
             ActiveQuestion = question;
             RaisePropertyChanged();
@@ -183,13 +183,16 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         {
             CreateNewPackDialog createNewPackDialog = new();
             createNewPackDialog.ShowDialog();
-            if (ActivePack != null)
+            if (createNewPackDialog.create.CommandParameter.ToString() == "True")
             {
+                if (ActivePack != null)
+                {
+                    await jsonDataHandling.SaveQuestionPack(ActivePack);
+                }
+                ActivePack = new QuestionPackViewModel(new QuestionPack(createNewPackDialog.packName.Text,
+                    (Difficulty)createNewPackDialog.difficulty.SelectedIndex, (int)createNewPackDialog.timeSlider.Value));
                 await jsonDataHandling.SaveQuestionPack(ActivePack);
             }
-            ActivePack = new QuestionPackViewModel(new QuestionPack(createNewPackDialog.packName.Text,
-                (Difficulty)createNewPackDialog.difficulty.SelectedIndex, (int)createNewPackDialog.timeSlider.Value));
-            await jsonDataHandling.SaveQuestionPack(ActivePack);
         }
         public async void SavePackDialog(object obj)
         {

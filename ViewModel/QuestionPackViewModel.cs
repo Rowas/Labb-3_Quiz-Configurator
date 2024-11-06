@@ -10,7 +10,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public QuestionPackViewModel(QuestionPack Model)
         {
             this.model = Model;
-            this.Questions = new ObservableCollection<Question>(model.Questions);
+            this.Questions = new ObservableCollection<Questions>(model.Questions);
         }
 
         public string Name
@@ -41,7 +41,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public ObservableCollection<Question> Questions { get; private set; }
+        public ObservableCollection<Questions> Questions { get; private set; }
 
 
     }

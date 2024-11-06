@@ -207,7 +207,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             mainWindowViewModel.SaveQuestionPackCommand.Execute(PlayPack.Name);
             ConfirmPlay = !ConfirmPlay;
             GameBegun = !GameBegun;
-            foreach (Question question in mainWindowViewModel.ActivePack.Questions)
+            foreach (Questions question in mainWindowViewModel.ActivePack.Questions)
             {
                 PlayPack.Questions.Add(question);
             }
@@ -236,9 +236,9 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             }
             AnswerList.Clear();
             r1 = rnd.Next(PlayPack.Questions.Count);
-            CurrentAskedQuestion = PlayPack.Questions[r1].Query;
-            AnswerList.Add(PlayPack.Questions[r1].CorrectAnswer);
-            foreach (string IncorrectAnswer in PlayPack.Questions[r1].IncorrectAnswers)
+            CurrentAskedQuestion = PlayPack.Questions[r1].Question;
+            AnswerList.Add(PlayPack.Questions[r1].Correct_Answer);
+            foreach (string IncorrectAnswer in PlayPack.Questions[r1].Incorrect_Answers)
             {
                 AnswerList.Add(IncorrectAnswer);
             }
@@ -274,18 +274,18 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public async Task ResponsePicked(string response)
         {
             timer.Stop();
-            if (response == PlayPack.Questions[r1].CorrectAnswer)
+            if (response == PlayPack.Questions[r1].Correct_Answer)
             {
                 CorrectOrNot = "That is Correct! Good Job!";
                 CorrectAnswers++;
             }
             else if (response == "TimesUp")
             {
-                CorrectOrNot = $"Time's up. The correct answer was: {PlayPack.Questions[r1].CorrectAnswer}";
+                CorrectOrNot = $"Time's up. The correct answer was: {PlayPack.Questions[r1].Correct_Answer}";
             }
             else
             {
-                CorrectOrNot = $"Sorry, wrong answer! The correct answer was: {PlayPack.Questions[r1].CorrectAnswer}";
+                CorrectOrNot = $"Sorry, wrong answer! The correct answer was: {PlayPack.Questions[r1].Correct_Answer}";
             }
             await Task.Delay(2000);
             PlayPack.Questions.RemoveAt(r1);

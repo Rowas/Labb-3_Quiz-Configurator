@@ -10,12 +10,12 @@
             Name = name;
             Difficulty = difficulty;
             TimeLimitInSeconds = timeLimitInSeconds;
-            Questions = new List<Question>();
+            Questions = new List<Questions>();
         }
 
         public string Name { get; set; }
         public Difficulty Difficulty { get; set; }
         public int TimeLimitInSeconds { get; set; }
-        public List<Question> Questions { get; set; }
+        public List<Questions> Questions { get; set; }
     }
 }

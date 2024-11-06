@@ -43,7 +43,7 @@
                     <DataTemplate>
                         <StackPanel>
                             <TextBlock Text="Question:" FontWeight="Bold"/>
-                            <TextBlock MaxWidth="320" TextWrapping="Wrap" Text="{Binding Query}"/>
+                            <TextBlock MaxWidth="320" TextWrapping="Wrap" Text="{Binding Question}"/>
                         </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -53,17 +53,17 @@
             <DockPanel Margin="10 30 10 10">
                 <DockPanel Dock="Top" Margin="0 0 10 0">
                     <Label DockPanel.Dock="Top" FontWeight="Bold" Padding="2" Content="Question" />
-                    <TextBox DockPanel.Dock="Top" Margin="0 5 0 0" TextWrapping="Wrap" Text="{Binding ActiveQuestion.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="75" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 5 0 0" TextWrapping="Wrap" Text="{Binding ActiveQuestion.Question, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="75" />
                 </DockPanel>
                 <StackPanel Margin="0 40 10 0">
                     <Label DockPanel.Dock="Top" Padding="0" Content="Correct Answer" />
-                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.CorrectAnswer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.Correct_Answer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Label DockPanel.Dock="Top" Padding="0" Content="Incorrect Answer 1" />
-                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.IncorrectAnswers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.Incorrect_Answers[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Label DockPanel.Dock="Top" Padding="0" Content="Incorrect Answer 2" />
-                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.IncorrectAnswers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.Incorrect_Answers[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Label DockPanel.Dock="Top" Padding="0" Content="Incorrect Answer 3" />
-                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.IncorrectAnswers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox DockPanel.Dock="Top" Margin="0 2 0 10" TextWrapping="Wrap" Text="{Binding ActiveQuestion.Incorrect_Answers[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
             </DockPanel>
         </DockPanel>

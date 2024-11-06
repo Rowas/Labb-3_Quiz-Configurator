@@ -57,7 +57,7 @@ namespace Labb_3___Quiz_Configurator.JSON
             }
 
             mainWindowViewModel.ActivePack.Questions.Clear();
-            foreach (Question q in LoadedPack.Questions)
+            foreach (Questions q in LoadedPack.Questions)
             {
                 mainWindowViewModel.ActivePack.Questions.Add(q);
             }
@@ -74,6 +74,10 @@ namespace Labb_3___Quiz_Configurator.JSON
                 mainWindowViewModel.Packs.Add(mainWindowViewModel.ActivePack);
             }
             jsonStream.Close();
+        }
+        public async Task AddImportedQuestions(JsonElement? json, Difficulty difficulty)
+        {
+
         }
     }
 }

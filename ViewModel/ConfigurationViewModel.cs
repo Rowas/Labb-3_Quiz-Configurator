@@ -11,6 +11,18 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
         private bool _changesMade = false;
 
+        private string _packDifficulty;
+
+        public string PackDifficulty
+        {
+            get => _packDifficulty;
+            set
+            {
+                _packDifficulty = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public DelegateCommand PackOptionsCommand { get; }
         public DelegateCommand RemovePackCommand { get; }
         public DelegateCommand ImportQuestionsCommand { get; }
@@ -30,22 +42,32 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             packOptionsDialog.difficulty.SelectedItem = ActivePack.Difficulty;
             packOptionsDialog.timeSlider.Value = ActivePack.TimeLimitInSeconds;
 
-            if (packOptionsDialog.ShowDialog() == true)
+            packOptionsDialog.ShowDialog();
+
+            if (packOptionsDialog.update.CommandParameter.ToString() == "True")
             {
                 ActivePack.Name = packOptionsDialog.packName.Text;
                 ActivePack.Difficulty = (Difficulty)packOptionsDialog.difficulty.SelectedIndex;
                 ActivePack.TimeLimitInSeconds = (int)packOptionsDialog.timeSlider.Value;
             }
+
         }
 
         public async void ImportQuestionsDialog(object obj)
         {
+            PackDifficulty = mainWindowViewModel.ActivePack.Difficulty.ToString();
             QuestionImportDialog questionImportDialog = new();
-            questionImportDialog.category.ItemsSource = await mainWindowViewModel.jsonQuestionImport.ImportCategories();
-            if (questionImportDialog.ShowDialog() == true)
+            List<(int, string)> categories = await mainWindowViewModel.jsonQuestionImport.ImportCategories();
+            questionImportDialog.category.ItemsSource = categories.Select(t => t.Item2).ToList();
+            questionImportDialog.difficulty.Text = PackDifficulty;
+            questionImportDialog.ShowDialog();
+            if (questionImportDialog.import.CommandParameter.ToString() == "True")
             {
-                await mainWindowViewModel.jsonQuestionImport.ImportQuestions((int)questionImportDialog.questionSlider.Value, questionImportDialog.difficulty.SelectedIndex.ToString(), questionImportDialog.category.SelectedItem.ToString());
-                await mainWindowViewModel.jsonDataHandling.LoadQuestionPack(obj, json);
+                var categoryID = questionImportDialog.category.SelectedIndex;
+                await mainWindowViewModel.jsonQuestionImport.ImportQuestions(
+                    (int)questionImportDialog.questionSlider.Value,
+                    mainWindowViewModel.ActivePack.Difficulty,
+                    categories[categoryID].Item1);
             }
         }
         public void RemovePack(object obj)
