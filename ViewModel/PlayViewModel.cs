@@ -9,7 +9,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         static Random rnd = new Random();
 
         private readonly MainWindowViewModel? mainWindowViewModel;
-        private QuestionPackViewModel? _activePack;
+        private readonly QuestionPackViewModel? _activePack;
 
         private QuestionPackViewModel? _playPack;
         private int r1;
@@ -159,8 +159,6 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             }
         }
 
-
-
         private DispatcherTimer timer;
 
         public DelegateCommand BeginGameCommand { get; }
@@ -190,11 +188,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
             PlayPack = new QuestionPackViewModel(new QuestionPack("Default Pack"));
         }
-        public void StopTimer()
-        {
-            timer.Stop();
-        }
-
+        public void StopTimer() => timer.Stop();
         private void RestartGame(object obj)
         {
             ConfirmPlay = true;
@@ -207,6 +201,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             mainWindowViewModel.SaveQuestionPackCommand.Execute(PlayPack.Name);
             ConfirmPlay = !ConfirmPlay;
             GameBegun = !GameBegun;
+            PlayPack.Questions.Clear();
             foreach (Questions question in mainWindowViewModel.ActivePack.Questions)
             {
                 PlayPack.Questions.Add(question);
@@ -218,12 +213,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         private void Timer_Tick(object? sender, EventArgs e)
         {
             TimeLimit -= 1;
-            if (TimeLimit <= 0)
-            {
-                QuestionAnswered = true;
-                PlayPack.Questions.RemoveAt(r1);
-                ResponsePicked("TimesUp");
-            }
+            if (TimeLimit <= 0) { ResponsePicked("TimesUp"); }
         }
 
         private void PickQuestion()
@@ -247,37 +237,18 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             timer.Start();
         }
 
-        public void Response1(object obj)
-        {
-            QuestionAnswered = true;
-            NextQuestionPicked = false;
-            ResponsePicked(AnswerArray[0]);
-        }
-        public void Response2(object obj)
-        {
-            QuestionAnswered = true;
-            NextQuestionPicked = false;
-            ResponsePicked(AnswerArray[1]);
-        }
-        public void Response3(object obj)
-        {
-            QuestionAnswered = true;
-            NextQuestionPicked = false;
-            ResponsePicked(AnswerArray[2]);
-        }
-        public void Response4(object obj)
-        {
-            QuestionAnswered = true;
-            NextQuestionPicked = false;
-            ResponsePicked(AnswerArray[3]);
-        }
+        public void Response1(object obj) => ResponsePicked(AnswerArray[0]);
+        public void Response2(object obj) => ResponsePicked(AnswerArray[1]);
+        public void Response3(object obj) => ResponsePicked(AnswerArray[2]);
+        public void Response4(object obj) => ResponsePicked(AnswerArray[3]);
         public async Task ResponsePicked(string response)
         {
+            QuestionAnswered = true;
+            NextQuestionPicked = false;
             timer.Stop();
             if (response == PlayPack.Questions[r1].Correct_Answer)
             {
-                CorrectOrNot = "That is Correct! Good Job!";
-                CorrectAnswers++;
+                CorrectOrNot = "That is Correct! Good Job!"; CorrectAnswers++;
             }
             else if (response == "TimesUp")
             {

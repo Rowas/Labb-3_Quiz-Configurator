@@ -194,10 +194,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
                 await jsonDataHandling.SaveQuestionPack(ActivePack);
             }
         }
-        public async void SavePackDialog(object obj)
-        {
-            await jsonDataHandling.SaveQuestionPack(this);
-        }
+        public async void SavePackDialog(object obj) => await jsonDataHandling.SaveQuestionPack(this);
         public async void LoadPackDialog(object obj)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();

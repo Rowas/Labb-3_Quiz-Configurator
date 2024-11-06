@@ -8,8 +8,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
     internal class ConfigurationViewModel : ViewModelBase
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
-
-        private bool _changesMade = false;
+        public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
 
         private string _packDifficulty;
 
@@ -76,8 +75,5 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             mainWindowViewModel.ActivePack = null;
             mainWindowViewModel.LoadPackDialog(this);
         }
-
-        public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
-        public string? json { get; private set; }
     }
 }
