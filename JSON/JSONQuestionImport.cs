@@ -1,12 +1,14 @@
-﻿using Labb_3___Quiz_Configurator.Model;
+﻿using Labb_3___Quiz_Configurator.Dialogs;
+using Labb_3___Quiz_Configurator.Model;
 using Labb_3___Quiz_Configurator.ViewModel;
 using System.Net.Http;
 using System.Text.Json;
 using System.Web;
+using System.Windows;
 
 namespace Labb_3___Quiz_Configurator.JSON
 {
-    class JSONQuestionImport : ViewModelBase
+    internal class JSONQuestionImport : ViewModelBase
     {
         public JsonSerializerOptions options = new JsonSerializerOptions()
         {
@@ -18,6 +20,8 @@ namespace Labb_3___Quiz_Configurator.JSON
         };
         private string URL;
 
+        private bool _importStatus = false;
+
         private string? apiKey;
 
         private List<(int, string)> categories = new();
@@ -26,9 +30,20 @@ namespace Labb_3___Quiz_Configurator.JSON
 
         private List<Questions> LoadedQuestions = new();
 
-        public JSONDataHandling? jsonDataHandling;
+        private JSONDataHandling? jsonDataHandling;
+        private MainWindowViewModel? mainWindowViewModel;
+        private QuestionImportDialog? questionImportDialog;
+        private ConfigurationViewModel? configurationViewModel;
 
-        private readonly MainWindowViewModel? mainWindowViewModel;
+        public bool ImportStatus
+        {
+            get => _importStatus;
+            set
+            {
+                _importStatus = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public JSONQuestionImport(MainWindowViewModel? mainWindowViewModel)
         {
@@ -62,28 +77,79 @@ namespace Labb_3___Quiz_Configurator.JSON
         }
         public async Task ImportQuestions(int numberOfQuestions, Difficulty difficultyOfQuestions, int category)
         {
-            if (apiKey == null)
+            try
             {
-                GetApiKey();
-            }
-            using (var httpClient = new HttpClient())
-            {
-                URL = $"https://opentdb.com/api.php?amount={numberOfQuestions}&category={category}" +
-                    $"&difficulty={difficultyOfQuestions.ToString().ToLower()}&type=multiple" +
-                    $"&token={apiKey}";
-                JsonElement json = JsonDocument.Parse(await httpClient.GetStringAsync(URL)).RootElement;
-                json = json.GetProperty("results");
-                LoadedQuestions = JsonSerializer.Deserialize<List<Questions>>(json, options);
-                foreach (Questions question in LoadedQuestions)
+                string id = "";
+                string name = "";
+
+                if (apiKey == null)
                 {
-                    mainWindowViewModel.ActivePack.Questions.Add(new Questions(HttpUtility.HtmlDecode(question.Question),
-                        HttpUtility.HtmlDecode(question.Correct_Answer),
-                        HttpUtility.HtmlDecode(question.Incorrect_Answers[0]),
-                        HttpUtility.HtmlDecode(question.Incorrect_Answers[1]),
-                        HttpUtility.HtmlDecode(question.Incorrect_Answers[2])));
+                    GetApiKey();
+                }
+                using (var httpClient = new HttpClient())
+                {
+                    URL = $"https://opentdb.com/api.php?amount={numberOfQuestions}&category={category}" +
+                        $"&difficulty={difficultyOfQuestions.ToString().ToLower()}&type=multiple" +
+                        $"&token={apiKey}";
+                    JsonElement json = JsonDocument.Parse(await httpClient.GetStringAsync(URL)).RootElement;
+                    JsonElement jsonResult = json.GetProperty("response_code");
+                    if (jsonResult.GetInt32() != 0)
+                    {
+                        MessageBoxButton button = MessageBoxButton.OK;
+                        MessageBoxImage icon = MessageBoxImage.Error;
+                        switch (json.GetInt32())
+                        {
+                            case 1:
+                                id = "No Results";
+                                name = "Could not return results. The API doesn't have enough questions for your query.";
+
+                                return;
+                            case 2:
+                                id = "Invalid Parameter";
+                                name = "Your request contained an invalid parameter.";
+
+                                return;
+                            case 3:
+                                id = "Token Not Found";
+                                name = "Session Token does not exist.";
+
+                                return;
+                            case 4:
+                                id = "Token Empty";
+                                name = "Session Token has returned all possible questions for the specified query. Resetting the Token is necessary.";
+
+                                return;
+                            case 5:
+                                id = "Rate Limit Exceeded";
+                                name = "Request has exceeded the maximum amount of requests allowed.";
+
+                                return;
+                            default:
+                                break;
+                        }
+                        MessageBox.Show(name, id, button, icon, MessageBoxResult.OK);
+                    }
+                    json = json.GetProperty("results");
+                    LoadedQuestions = JsonSerializer.Deserialize<List<Questions>>(json, options);
+                    foreach (Questions question in LoadedQuestions)
+                    {
+                        mainWindowViewModel.ActivePack.Questions.Add(new Questions(HttpUtility.HtmlDecode(question.Question),
+                            HttpUtility.HtmlDecode(question.Correct_Answer),
+                            HttpUtility.HtmlDecode(question.Incorrect_Answers[0]),
+                            HttpUtility.HtmlDecode(question.Incorrect_Answers[1]),
+                            HttpUtility.HtmlDecode(question.Incorrect_Answers[2])));
+
+                    }
 
                 }
-
+            }
+            catch (HttpRequestException ex)
+            {
+                MessageBox.Show("Too Many Requests, Try again in a moment!", "Warning");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Import Failed, Try again in a moment!", "Warning");
             }
         }
     }

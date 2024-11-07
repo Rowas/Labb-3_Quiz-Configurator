@@ -18,8 +18,8 @@ namespace Labb_3___Quiz_Configurator.ViewModel
 
         public ObservableCollection<QuestionPackViewModel> Packs { get; set; }
         public ConfigurationViewModel ConfigurationViewModel { get; }
-        public JSONDataHandling? jsonDataHandling;
-        public JSONQuestionImport? jsonQuestionImport;
+        public JSONDataHandling? jsonDataHandling { get; }
+        public JSONQuestionImport? jsonQuestionImport { get; }
 
         public DelegateCommand ModeSwitchCommand { get; }
         public DelegateCommand AddPackCommand { get; }

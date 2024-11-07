@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Labb_3___Quiz_Configurator.JSON;
+using Labb_3___Quiz_Configurator.ViewModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Labb_3___Quiz_Configurator.Dialogs
@@ -6,11 +8,15 @@ namespace Labb_3___Quiz_Configurator.Dialogs
     /// <summary>
     /// Interaction logic for QuestionImportDialog.xaml
     /// </summary>
-    public partial class QuestionImportDialog : Window
+    partial class QuestionImportDialog : Window
     {
-        public QuestionImportDialog()
+        private JSONQuestionImport? jsonQuestionImport;
+
+        internal QuestionImportDialog(MainWindowViewModel? mainWindowViewModel)
         {
             InitializeComponent();
+            jsonQuestionImport = new JSONQuestionImport(mainWindowViewModel);
+            this.DataContext = mainWindowViewModel;
         }
         private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
         {

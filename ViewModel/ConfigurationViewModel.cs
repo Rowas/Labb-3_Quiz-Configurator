@@ -11,6 +11,7 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public QuestionPackViewModel? ActivePack { get => mainWindowViewModel?.ActivePack; }
 
         private string _packDifficulty;
+        private List<string> _categoryStrings;
 
         public string PackDifficulty
         {
@@ -18,6 +19,16 @@ namespace Labb_3___Quiz_Configurator.ViewModel
             set
             {
                 _packDifficulty = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public List<string> CategoryStrings
+        {
+            get => _categoryStrings;
+            set
+            {
+                _categoryStrings = value;
                 RaisePropertyChanged();
             }
         }
@@ -55,10 +66,9 @@ namespace Labb_3___Quiz_Configurator.ViewModel
         public async void ImportQuestionsDialog(object obj)
         {
             PackDifficulty = mainWindowViewModel.ActivePack.Difficulty.ToString();
-            QuestionImportDialog questionImportDialog = new();
+            QuestionImportDialog questionImportDialog = new(mainWindowViewModel);
             List<(int, string)> categories = await mainWindowViewModel.jsonQuestionImport.ImportCategories();
-            questionImportDialog.category.ItemsSource = categories.Select(t => t.Item2).ToList();
-            questionImportDialog.difficulty.Text = PackDifficulty;
+            CategoryStrings = categories.Select(t => t.Item2).ToList();
             questionImportDialog.ShowDialog();
             if (questionImportDialog.import.CommandParameter.ToString() == "True")
             {
